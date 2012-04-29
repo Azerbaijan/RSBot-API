@@ -21,15 +21,12 @@ public class Inventory {
 	public static final int WIDGET_DUNGEONEERING_SHOP = 957;
 	public static final int WIDGET_BEAST_OF_BURDEN_STORAGE = 665;
 
-	public static final int[] ALT_WIDGETS = {
-			WIDGET_BANK,
-			WIDGET_PRICE_CHECK, WIDGET_EQUIPMENT_BONUSES,
-			WIDGET_EXCHANGE, WIDGET_SHOP, WIDGET_DUNGEONEERING_SHOP,
-			WIDGET_BEAST_OF_BURDEN_STORAGE
-	};
+	public static final int[] ALT_WIDGETS = { WIDGET_BANK, WIDGET_PRICE_CHECK,
+			WIDGET_EQUIPMENT_BONUSES, WIDGET_EXCHANGE, WIDGET_SHOP,
+			WIDGET_DUNGEONEERING_SHOP, WIDGET_BEAST_OF_BURDEN_STORAGE };
 
 	public static final Filter<Item> ALL_ITEMS_FILTER = new Filter<Item>() {
-		public boolean accept(Item item) {
+		public boolean accept(final Item item) {
 			return true;
 		}
 	};
@@ -61,20 +58,26 @@ public class Inventory {
 
 	/**
 	 * Returns the items matching a set filter.
-	 *
-	 * @param cached     If true opens the inventory tab, if false it uses the last seen representation of the items
-	 * @param itemFilter The filter to compare against
+	 * 
+	 * @param cached
+	 *            If true opens the inventory tab, if false it uses the last
+	 *            seen representation of the items
+	 * @param itemFilter
+	 *            The filter to compare against
 	 * @return The items matching the filter
 	 */
-	public static Item[] getItems(final boolean cached, final Filter<Item> itemFilter) {
+	public static Item[] getItems(final boolean cached,
+			final Filter<Item> itemFilter) {
 		final WidgetChild inventoryWidget = getWidget(cached);
 		if (inventoryWidget != null) {
-			final WidgetChild[] inventoryChildren = inventoryWidget.getChildren();
+			final WidgetChild[] inventoryChildren = inventoryWidget
+					.getChildren();
 			if (inventoryChildren.length > 27) {
 				final List<Item> items = new LinkedList<Item>();
 				for (int i = 0; i < 28; ++i) {
 					if (inventoryChildren[i].getChildId() != -1) {
-						final Item inventoryItem = new Item(inventoryChildren[i]);
+						final Item inventoryItem = new Item(
+								inventoryChildren[i]);
 						if (itemFilter.accept(inventoryItem)) {
 							items.add(new Item(inventoryChildren[i]));
 						}
@@ -125,12 +128,15 @@ public class Inventory {
 
 	/**
 	 * Gets the count of a set of items
-	 *
-	 * @param countStack Should the method count item stacks?
-	 * @param itemFilter The filter to compare against
+	 * 
+	 * @param countStack
+	 *            Should the method count item stacks?
+	 * @param itemFilter
+	 *            The filter to compare against
 	 * @return The amount of items matching the filter
 	 */
-	public static int getCount(final boolean countStack, final Filter<Item> itemFilter) {
+	public static int getCount(final boolean countStack,
+			final Filter<Item> itemFilter) {
 		final Item[] items = getItems();
 		int count = 0;
 		for (final Item item : items) {
@@ -148,11 +154,12 @@ public class Inventory {
 
 	/**
 	 * Selects the specified item in the inventory
-	 *
-	 * @param item The item to select.
+	 * 
+	 * @param item
+	 *            The item to select.
 	 * @return <tt>true</tt> if the item was selected; otherwise <tt>false</tt>.
 	 */
-	public static boolean selectItem(final Item item) {//TODO fix index 0
+	public static boolean selectItem(final Item item) {// TODO fix index 0
 		final int itemID = item.getId();
 		Item selItem = getSelectedItem();
 		if (selItem != null && selItem.getId() == itemID) {
@@ -171,11 +178,39 @@ public class Inventory {
 		return selItem != null && selItem.getId() == itemID;
 	}
 
-	public static Item getItemAt(final int index) {
-		final WidgetChild child = getWidget(false).getChild(index);
-		return index >= 0 && index < 28 && child != null ? new Item(child) : null;
+	/**
+	 * Drops a specific amount of items in the inventory, given the ID/s.
+	 * 
+	 * @param amount
+	 *            - The amount of items that require dropping.
+	 * @param ids
+	 *            - The ID/s of the items that require dropping.
+	 * @return <tt>true</tt> if the requested amount of items were dropped.
+	 */
+	public static boolean dropItem(final int amount, final int... ids) {
+		int var = 0;
+		while (var < amount) {
+			for (final Item item : Inventory.getItems()) {
+				if (item != null) {
+					for (final int id : ids) {
+						if (item.getId() == id) {
+							if (item.getWidgetChild().interact("Drop")) {
+								Time.sleep(150, 250);
+								++var;
+							}
+						}
+					}
+				}
+			}
+		}
+		return var == amount;
 	}
 
+	public static Item getItemAt(final int index) {
+		final WidgetChild child = getWidget(false).getChild(index);
+		return index >= 0 && index < 28 && child != null ? new Item(child)
+				: null;
+	}
 
 	public static Item getSelectedItem() {
 		final int index = getSelectedItemIndex();
@@ -184,7 +219,7 @@ public class Inventory {
 
 	/**
 	 * Gets the selected item index.
-	 *
+	 * 
 	 * @return The index of current selected item, or -1 if none is selected.
 	 */
 	public static int getSelectedItemIndex() {

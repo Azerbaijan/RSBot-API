@@ -292,7 +292,52 @@ public class Bank {
 		}
 		return Inventory.getCount(true) != invCount;
 	}
-
+	
+	/**
+	 * Deposits everything from the inventory except for the specified items.
+	 * 
+	 * @param ids
+	 *            The IDs of the items that you want to keep.
+	 * @return <tt>true</tt> if we have deposited all items except for the ones
+	 *         we want to keep.
+	 */
+	public static boolean depositAllExcept(final int... ids) {
+		boolean deposited = false;
+		int var = 0;
+		final int count = Inventory.getCount(true), itemCount = Inventory
+				.getCount(true, ids);
+		w: while (var < (count - itemCount)) {
+			l: for (final Item item : Inventory.getItems()) {
+				if (!Widgets.get(762).validate()) {
+					break w;
+				}
+				for (final int id : ids) {
+					if (item.getId() == id)
+						continue l;
+				}
+				final int invCount = Inventory.getCount(true, item.getId());
+				if (item.getWidgetChild().validate()) {
+					if (item.getWidgetChild().interact(
+							invCount > 1 ? "Deposit-All" : "Deposit")) {
+						final Timer timer = new Timer(3000);
+						while (timer.isRunning()) {
+							if (Inventory.getCount(true, item.getId()) < invCount)
+								break;
+						}
+						if (Inventory.getCount(true, item.getId()) < invCount) {
+							var += invCount;
+						}
+						if (var == (count - itemCount)) {
+							deposited = true;
+							break w;
+						}
+					}
+				}
+			}
+		}
+		return deposited;
+	}
+	
 	/**
 	 * Deposits the players inventory using the provided "deposit items" button. For efficiency, this method will
 	 * automatically return <tt>true</tt> without clicking the button if the players inventory is already empty.

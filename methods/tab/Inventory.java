@@ -170,6 +170,27 @@ public class Inventory {
 		}
 		return selItem != null && selItem.getId() == itemID;
 	}
+	
+	public static boolean dropItem(final int amount, final int... ids) {
+		int var = 0, count = Inventory.getCount(ids);
+		final int finalAmount = amount > count ? count : amount;
+		while (var < finalAmount) {
+		       for (final Item item : Inventory.getItems()) {
+			        for (final int id : ids) {
+				        if (item.getId() != id) {
+							continue;
+					}
+				}
+				if (item.getWidgetChild().validate()) {
+					if (item.getWidgetChild().interact("Drop")) {
+					     Time.sleep(150, 250);
+				             ++var;
+					}
+			        }
+			}
+		}
+		return var == amount;
+	}
 
 	public static Item getItemAt(final int index) {
 		final WidgetChild child = getWidget(false).getChild(index);

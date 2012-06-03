@@ -227,8 +227,8 @@ public class Bank {
 		return withdraw(id, amount.getValue());
 	}
 
-	public static boolean withdraw(final int id, final int amount) {
-		final Item item = getItem(id);
+	public static boolean withdraw(final int amount, final int... ids) {
+		final Item item = getItem(ids);
 		if (!isOpen() || item == null) {
 			return false;
 		}

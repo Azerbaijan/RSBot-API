@@ -170,11 +170,6 @@ public class Bank {
 		if (bank == null) {
 			return false;
 		}
-		if (!bank.isOnScreen() && (!Players.getLocal().isMoving()
-				|| Calculations.distance(Walking.getDestination(), ((Locatable) bank).getLocation()) > 4)) {
-			Walking.walk((Locatable) bank);
-			Time.sleep(200, 400);
-		}
 		if (bank.isOnScreen()) {
 			boolean interacted = false;
 			if (isBanker((Identifiable) bank)) {

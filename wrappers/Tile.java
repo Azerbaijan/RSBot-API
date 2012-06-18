@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.Polygon;
 
 import org.powerbot.game.api.methods.Calculations;
+import org.powerbot.game.api.wrappers.Verifiable;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.input.Mouse;
@@ -15,7 +16,7 @@ import org.powerbot.game.api.util.Random;
 /**
  * @author Timer
  */
-public class Tile implements Entity, Locatable, Identifiable {
+public class Tile implements Entity, Locatable, Identifiable, Verifiable {
 	protected final int x, y, plane;
 
 	public static interface Flag {
@@ -205,6 +206,11 @@ public class Tile implements Entity, Locatable, Identifiable {
 
 	public int getId() {
 		return x * 31 + y;
+	}
+	
+	@Override
+	public boolean validate() {
+		return canReach();
 	}
 
 	@Override

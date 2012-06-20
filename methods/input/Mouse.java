@@ -396,6 +396,10 @@ public class Mouse {
 	public static void putSide(final int side) {
 		sides.put(Thread.currentThread().getThreadGroup(), side);
 	}
+	
+	public static void setSpeed(final double times) {
+		Context.mult(times);
+	}
 
 	private static MouseNode create(final int x, final int y, final int randomX, final int randomY, final boolean click, final boolean left) {
 		return new MouseNode(

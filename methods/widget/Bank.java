@@ -81,7 +81,7 @@ public class Bank {
 	private static final Filter<Identifiable> ALL_FILTER = new Filter<Identifiable>() {
 		@Override
 		public boolean accept(final Identifiable bank) {
-			if ((!isBanker(bank) && !isBankBooth(bank) && !isBankChest(bank) && !isBankCounter(bank))) {
+			if (!isBanker(bank) && !isBankBooth(bank) && !isBankChest(bank) && !isBankCounter(bank)) {
 				return false;
 			}
 			for (final Tile badTile : UNREACHABLE_BANK_TILES) {
@@ -218,7 +218,7 @@ public class Bank {
 		Locatable nearest = null;
 		for (final Locatable bank : banks) {
 			if (ALL_FILTER.accept((Identifiable) bank) && ((Entity) bank).validate()) {
-				if ((nearest == null || Calculations.distanceTo(bank) < Calculations.distanceTo(nearest))) {
+				if (nearest == null || Calculations.distanceTo(bank) < Calculations.distanceTo(nearest)) {
 					nearest = bank;
 				}
 			}

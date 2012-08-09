@@ -13,6 +13,9 @@ public class Settings {
 	public static final int SETTING_RUN_ENABLED = 173;
 	public static final int SETTING_SPECIAL_ENERGY = 300;
 	public static final int SETTING_SPECIAL_ATTACK = 301;
+	public static final int SETTING_LIFE_POINTS = 1240;
+	public static final int SETTING_IS_POISONED = 102;
+	public static final int SETTING_FAMILIAR_ID = 1174;
 	public static final int SETTING_RANDOMEVENT_DRILLDEMON_MAT = 531;
 
 	/**

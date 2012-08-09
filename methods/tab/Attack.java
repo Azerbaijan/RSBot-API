@@ -27,6 +27,15 @@ public class Attack {
 	public static int getSpecialEnergy() {
 		return Settings.get(Settings.SETTING_SPECIAL_ENERGY) / 10;
 	}
+	
+	/**
+	 * Gets the life points of your player.
+	 *
+	 * @return the life points.
+	 */
+	public static int getLifePoints() {
+		return Settings.get(Settings.SETTING_LIFE_POINTS) >>> 1;
+	}
 
 	/**
 	 * Gets the name of the equipped weapon.

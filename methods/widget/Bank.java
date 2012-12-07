@@ -77,8 +77,8 @@ public class Bank {
 
 	public static final int WIDGET_BANKPIN = 13;
 
-	public static final int SETTING_WITHDRAWAL_MODE = 115;
-	public static final int SETTING_BANK_TAB = 1248;
+	public static final int SETTING_WITHDRAWAL_MODE = 160;
+	public static final int SETTING_BANK_TAB = 110;
 
 	private static final Filter<Identifiable> ALL_FILTER = new Filter<Identifiable>() {
 		@Override

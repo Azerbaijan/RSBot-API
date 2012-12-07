@@ -11,7 +11,7 @@ import org.powerbot.game.client.SettingsData;
 public class Settings {
 	public static final int SETTING_COMBAT_STYLE = 43;
 	public static final int SETTING_AUTO_RETALIATE = 172;
-	public static final int SETTING_RUN_ENABLED = 173;
+	public static final int SETTING_RUN_ENABLED = 463;
 	public static final int SETTING_SPECIAL_ENERGY = 300;
 	public static final int SETTING_SPECIAL_ATTACK = 301;
 	public static final int SETTING_RANDOMEVENT_DRILLDEMON_MAT = 531;

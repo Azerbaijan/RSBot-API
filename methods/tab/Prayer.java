@@ -79,11 +79,11 @@ public class Prayer {
 		}
 
 		public boolean isActive() {
-			return Settings.get(1582, this.shift, 0x1) == 1;
+			return Settings.get(3275, this.shift, 0x1) == 1;
 		}
 
 		public boolean isSetQuick() {
-			return Settings.get(1587, this.shift, 0x1) == 1;
+			return Settings.get(1768, this.shift, 0x1) == 1;
 		}
 	}
 
@@ -146,11 +146,11 @@ public class Prayer {
 		}
 
 		public boolean isActive() {
-			return Settings.get(1395, this.shift, 0x1) == 1;
+			return Settings.get(3272, this.shift, 0x1) == 1;
 		}
 
 		public boolean isSetQuick() {
-			return Settings.get(1397, this.shift, 0x1) == 1;
+			return Settings.get(1770, this.shift, 0x1) == 1;
 		}
 	}
 
@@ -185,7 +185,7 @@ public class Prayer {
 	 * @return Current prayer points.
 	 */
 	public static int getPoints() {
-		return Settings.get(2382, 0x7fff);
+		return Settings.get(3274, 0x7fff) / 10;
 	}
 
 	/**
@@ -194,7 +194,7 @@ public class Prayer {
 	 * @return <tt>true</tt> if on curses, otherwise <tt>false</tt>.
 	 */
 	public static boolean isCursesOn() {
-		return Settings.get(1584) % 2 != 0;
+		return Settings.get(3277) % 2 != 0;
 	}
 
 	/**
@@ -203,7 +203,7 @@ public class Prayer {
 	 * @return <tt>true</tt> if quick prayers/curses are on, otherwise <tt>false</tt>.
 	 */
 	public static boolean isQuickOn() {
-		return Settings.get(1396) == 0x2;
+		return Settings.get(1769) == 0x2;
 	}
 
 	/**
@@ -261,7 +261,7 @@ public class Prayer {
 		}
 		if (Widgets.get(WIDGET_PRAYER_ORB, 2).interact("Select quick")) {
 			final Timer timer = new Timer(1000);
-			while (timer.isRunning() && Settings.get(1396) != 0x1) {
+			while (timer.isRunning() && Settings.get(1769) != 0x1) {
 				Task.sleep(15);
 			}
 			Task.sleep(100);

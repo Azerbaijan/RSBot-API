@@ -170,11 +170,11 @@ public class Summoning {
 		}
 
 		public boolean isSetLeft() {
-			return Settings.get(1493) == this.setting;
+			return Settings.get(1789) == this.setting;
 		}
 
 		public boolean isSelected() {
-			return Settings.get(1494) == this.set;
+			return Settings.get(1790) == this.set;
 		}
 	}
 
@@ -193,7 +193,7 @@ public class Summoning {
 	 * @return Current summoning special points.
 	 */
 	public static int getSpecialPoints() {
-		return Settings.get(1177);
+		return Settings.get(1787);
 	}
 
 	/**
@@ -215,7 +215,7 @@ public class Summoning {
 	public static boolean select(final String action) {
 		if ("renew familiar".contains(action.toLowerCase())) {
 			final Familiar familiar = getEnum();
-			return familiar != null && familiar.getRequiredPoints() <= getPoints() && Inventory.getCount(Settings.get(448)) > 0
+			return familiar != null && familiar.getRequiredPoints() <= getPoints() && Inventory.getCount(Settings.get(1831)) > 0
 					&& Widgets.get(WIDGET_SUMMONING_ORB, 2).interact(action);
 		}
 		if ("dismiss".contains(action.toLowerCase())) {
@@ -303,7 +303,7 @@ public class Summoning {
 	 * @return Familiar remaining time in seconds.
 	 */
 	public static int getTimeLeft() {
-		return Math.round((Settings.get(1176) / (float) 2.13333333333));
+		return Math.round((Settings.get(1786) / (float) 2.13333333333));
 	}
 
 	/**
@@ -312,7 +312,7 @@ public class Summoning {
 	 * @return <tt>true</tt> if player have summoned familiar, otherwise <tt>false</tt>.
 	 */
 	public static boolean isFamiliarSummoned() {
-		return getTimeLeft() > 0 && Settings.get(1174) > 0;
+		return getTimeLeft() > 0 && Settings.get(1831) > 0;
 	}
 
 	/**
@@ -338,7 +338,7 @@ public class Summoning {
 		return NPCs.getNearest(new Filter<NPC>() {
 			@Override
 			public boolean accept(NPC npc) {
-				return npc.getId() == Settings.get(1174) && npc.getInteracting() != null
+				return npc.getId() == Settings.get(1784) && npc.getInteracting() != null
 						&& npc.getInteracting().equals(Players.getLocal());
 			}
 		});
@@ -354,7 +354,7 @@ public class Summoning {
 			return null;
 		}
 		for (Familiar f : Familiar.values()) {
-			if (f.getPouchId() == Settings.get(448)) {
+			if (f.getPouchId() == Settings.get(1831)) {
 				return f;
 			}
 		}

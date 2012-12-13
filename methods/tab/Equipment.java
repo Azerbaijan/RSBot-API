@@ -201,7 +201,7 @@ public class Equipment {
 		}
 		final int[] visibleEquipment = Players.getLocal().getAppearance();
 		int slotId = visibleEquipment[slot.getAppearanceIndex()];
-		if( slotId <= 0 && slot.getSheathedAppearanceIndex() != -1) {
+		if (slotId <= 0 && slot.getSheathedAppearanceIndex() != -1) {
 			slotId = visibleEquipment[slot.getSheathedAppearanceIndex()];
 		}
 		return slotId > 0 ? slotId : -1;

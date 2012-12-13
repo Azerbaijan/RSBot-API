@@ -15,21 +15,22 @@ public class Equipment {
 	public static final int COMPONENT_EQUIP_INVENTORY = 9;
 
 	public static final int NUM_APPEARANCE_SLOTS = 9;
-	public static final int NUM_SLOTS = 12;
+	public static final int NUM_SLOTS = 13;
 
 	public static enum Slot {
-		HELMET(6, 0, 0),
-		CAPE(9, 1, 1),
-		NECK(12, 2, 2),
-		WEAPON(15, 3, 3),
-		BODY(18, 4, 4),
-		SHIELD(21, 5, 5),
-		LEGS(24, 7, 7),
-		HANDS(27, 9, 9),
-		FEET(30, 10, 10),
-		RING(33, 12, -1),
-		AMMO(36, 13, -1),
-		AURA(46, 14, 14);
+		HELMET(7, 0, 0),
+		CAPE(10, 1, 1),
+		NECK(13, 2, 2),
+		WEAPON(16, 3, 3),
+		BODY(19, 4, 4),
+		SHIELD(22, 5, 5),
+		LEGS(25, 7, 7),
+		HANDS(28, 9, 9),
+		FEET(31, 10, 10),
+		RING(34, 12, -1),
+		AMMO(39, 13, -1),
+		AURA(48, 14, 14),
+		POCKET(70, 15, -1);
 
 		private final int componentIndex;
 		private final int bankComponentIndex;

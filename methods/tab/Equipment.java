@@ -15,30 +15,33 @@ public class Equipment {
 	public static final int COMPONENT_EQUIP_INVENTORY = 9;
 
 	public static final int NUM_APPEARANCE_SLOTS = 9;
-	public static final int NUM_SLOTS = 12;
+	public static final int NUM_SLOTS = 13;
 
 	public static enum Slot {
-		HELMET(6, 0, 0),
-		CAPE(9, 1, 1),
-		NECK(12, 2, 2),
-		WEAPON(15, 3, 3),
-		BODY(18, 4, 4),
-		SHIELD(21, 5, 5),
-		LEGS(24, 7, 7),
-		HANDS(27, 9, 9),
-		FEET(30, 10, 10),
-		RING(33, 12, -1),
-		AMMO(36, 13, -1),
-		AURA(46, 14, 14);
+		HELMET(7, 0, 0, -1),
+		CAPE(10, 1, 1, -1),
+		NECK(13, 2, 2, -1),
+		WEAPON(16, 3, 3, 15),
+		BODY(19, 4, 4, -1),
+		SHIELD(22, 5, 5, 16),
+		LEGS(25, 7, 7, -1),
+		HANDS(28, 9, 9, -1),
+		FEET(31, 10, 10, -1),
+		RING(34, 12, -1, -1),
+		AMMO(39, 13, -1, -1),
+		AURA(48, 14, 14, -1),
+		POCKET(70, 15, -1, -1);
 
 		private final int componentIndex;
 		private final int bankComponentIndex;
 		private final int appearanceIndex;
+		private final int sheathedAppearanceIndex;
 
-		Slot(final int componentIndex, final int bankComponentIndex, final int appearanceIndex) {
+		Slot(final int componentIndex, final int bankComponentIndex, final int appearanceIndex, final int sheathedAppearanceIndex) {
 			this.componentIndex = componentIndex;
 			this.bankComponentIndex = bankComponentIndex;
 			this.appearanceIndex = appearanceIndex;
+			this.sheathedAppearanceIndex = sheathedAppearanceIndex;
 		}
 
 		/**
@@ -85,6 +88,15 @@ public class Equipment {
 		 */
 		public int getAppearanceIndex() {
 			return appearanceIndex;
+		}
+
+		/**
+		 * Gets the sheathed visible equipment index of the slot
+		 *
+		 * @return the sheathed visible equipment index
+		 */
+		public int getSheathedAppearanceIndex() {
+			return sheathedAppearanceIndex;
 		}
 	}
 
@@ -187,7 +199,11 @@ public class Equipment {
 		if (slot.getAppearanceIndex() == -1) {
 			return -1;
 		}
-		final int slotId = Players.getLocal().getAppearance()[slot.getAppearanceIndex()];
+		final int[] visibleEquipment = Players.getLocal().getAppearance();
+		int slotId = visibleEquipment[slot.getAppearanceIndex()];
+		if (slotId <= 0 && slot.getSheathedAppearanceIndex() != -1) {
+			slotId = visibleEquipment[slot.getSheathedAppearanceIndex()];
+		}
 		return slotId > 0 ? slotId : -1;
 	}
 
@@ -201,7 +217,7 @@ public class Equipment {
 		final int[] visibleEquipment = Players.getLocal().getAppearance();
 		final Slot[] slots = Slot.values();
 		for (int i = 0; i < equipmentIds.length; i++) {
-			final int index = slots[i].getAppearanceIndex();
+			final int index = visibleEquipment[slots[i].getAppearanceIndex()] > 0 ? slots[i].getAppearanceIndex() : slots[i].getSheathedAppearanceIndex();
 			if (index != -1) {
 				final int id = visibleEquipment[index];
 				equipmentIds[i] = id > 0 ? id : -1;

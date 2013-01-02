@@ -5,6 +5,7 @@ import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
+import org.powerbot.game.client.Skill;
 
 /**
  * @author Timer
@@ -74,28 +75,36 @@ public class Skills {
 	public static final int WIDGET_SUMMONING = 109;
 	public static final int WIDGET_DUNGEONEERING = 115;
 
+	@Deprecated
+	/**
+	 * @see #getTopLevels()
+	 */
 	public static int[] getLevels() {
-		final Client client = Context.client();
-		//return client.getSkillLevels();
-		return new int[25];
+		return getTopLevels();
 	}
 
-	public static int[] getMaxLevels() {
+	public static int[] getTopLevels() {
 		final Client client = Context.client();
-		//return client.getSkillLevelMaxes();
-		return new int[25];
+		final Skill[] skills = client.getPlayerMetaInfo().getSkills();
+		final int[] levels = new int[skills.length];
+		for (int i = 0; i < skills.length; i++) levels[i] = skills[i].getLevel();
+		return levels;
+	}
+
+	public static int[] getBottomLevels() {
+		final Client client = Context.client();
+		final Skill[] skills = client.getPlayerMetaInfo().getSkills();
+		final int[] levels = new int[skills.length];
+		for (int i = 0; i < skills.length; i++) levels[i] = skills[i].getRealLevel();
+		return levels;
 	}
 
 	public static int[] getExperiences() {
 		final Client client = Context.client();
-		//return client.getSkillExperiences();
-		return new int[25];
-	}
-
-	public static int[] getMaxExperiences() {
-		final Client client = Context.client();
-		//return client.getSkillExperienceMaxes();
-		return new int[25];
+		final Skill[] skills = client.getPlayerMetaInfo().getSkills();
+		final int[] exparr = new int[skills.length];
+		for (int i = 0; i < skills.length; i++) exparr[i] = skills[i].getExperience();
+		return exparr;
 	}
 
 	public static int getLevelAt(final int exp) {
@@ -108,7 +117,7 @@ public class Skills {
 	}
 
 	public static int getLevel(final int index) {
-		return getLevels()[index];
+		return getTopLevels()[index];
 	}
 
 	public static int getRealLevel(final int index) {

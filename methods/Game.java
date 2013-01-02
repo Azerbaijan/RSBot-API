@@ -10,7 +10,6 @@ import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.BaseInfo;
 import org.powerbot.game.client.Client;
-import org.powerbot.game.client.RSInfo;
 
 /**
  * A utility for the manipulation of the game.
@@ -34,14 +33,10 @@ public class Game {
 		final int clientState = client.getLoginIndex();
 		if (clientState == constants.CLIENTSTATE_3) {
 			return 3;
-		} else if (clientState == constants.CLIENTSTATE_6) {
-			return 6;
 		} else if (clientState == constants.CLIENTSTATE_7) {
 			return 7;
 		} else if (clientState == constants.CLIENTSTATE_9) {
 			return 9;
-		} else if (clientState == constants.CLIENTSTATE_10) {
-			return 10;
 		} else if (clientState == constants.CLIENTSTATE_11) {
 			return 11;
 		} else if (clientState == constants.CLIENTSTATE_12) {
@@ -76,7 +71,7 @@ public class Game {
 	 */
 	public static int getBaseX() {
 		final Client client = Context.client();
-		return client.getRSGroundInfo().getBaseInfo().getX() >> 8;
+		return client.getRSGroundInfo().getBaseInfo().getX();
 	}
 
 	/**
@@ -84,15 +79,15 @@ public class Game {
 	 */
 	public static int getBaseY() {
 		final Client client = Context.client();
-		return client.getRSGroundInfo().getBaseInfo().getY() >> 8;
+		return client.getRSGroundInfo().getBaseInfo().getY();
 	}
 
 	public static Tile getMapBase() {
 		final Client client = Context.client();
 		final BaseInfo infoInts = client.getRSGroundInfo().getBaseInfo();
 		return new Tile(
-				infoInts.getX() >> 8,
-				infoInts.getY() >> 8,
+				infoInts.getX(),
+				infoInts.getY(),
 				Game.getPlane()
 		);
 	}

@@ -12,9 +12,6 @@ import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
-import org.powerbot.game.client.RSGroundBytes;
-import org.powerbot.game.client.RSGroundInfo;
-import org.powerbot.game.client.RSInfo;
 import org.powerbot.game.client.TileData;
 
 /**
@@ -151,7 +148,7 @@ public class Calculations {
 
 		if (mmDist * mmDist >= actDistSq) {
 			int angle = 0x3fff & (int) client.getMinimapAngle();
-			final boolean setting4 = client.getMinimapSettings() == 4;
+			final boolean setting4 = client.getMinimapSettings() == Context.constants().MINIMAP_SETTINGS_ON;
 
 			if (!setting4) {
 				angle = 0x3fff & client.getMinimapOffset() + (int) client.getMinimapAngle();

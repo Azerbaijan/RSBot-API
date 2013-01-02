@@ -29,8 +29,8 @@ public class Walking {
 
 	public static Tile getDestination() {
 		final Client client = Context.client();
-		final int lx = client.getDestX() / 4;
-		final int ly = client.getDestY() / 4;
+		final int lx = client.getDestX();
+		final int ly = client.getDestY();
 		if (lx == -1 || ly == -1) {
 			return new Tile(-1, -1, -1);
 		}

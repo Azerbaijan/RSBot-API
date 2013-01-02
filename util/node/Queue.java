@@ -18,10 +18,10 @@ public class Queue<N extends org.powerbot.game.client.NodeSub> {
 
 	public int size() {
 		int size = 0;
-		org.powerbot.game.client.NodeSub node = ((NodeSub) nl.getTail()).getPrevSub();
+		org.powerbot.game.client.NodeSub node = nl.getTail().getNextSub();
 
 		while (node != nl.getTail()) {
-			node = node.getPrevSub();
+			node = node.getNextSub();
 			size++;
 		}
 
@@ -29,7 +29,7 @@ public class Queue<N extends org.powerbot.game.client.NodeSub> {
 	}
 
 	public N getHead() {
-		org.powerbot.game.client.NodeSub node = ((NodeSub) nl.getTail()).getNextSub();
+		org.powerbot.game.client.NodeSub node = nl.getTail().getNextSub();
 
 		if (node == nl.getTail()) {
 			current = null;

@@ -1,7 +1,6 @@
 package org.powerbot.game.api.methods;
 
 import org.powerbot.game.bot.Context;
-import org.powerbot.game.client.SettingsData;
 
 /**
  * A utility for the manipulation of game settings.
@@ -20,7 +19,7 @@ public class Settings {
 	 * @return The <code>int[]</code> of all the game's settings in their respective positioning.
 	 */
 	public static int[] get() {
-		return ((int[]) ((SettingsData) ((org.powerbot.game.client.Settings) Context.client().getSettingArray()).getData()).getData()).clone();
+		return Context.client().getPlayerMetaInfo().getSettings().getData().clone();
 	}
 
 	/**

@@ -7,7 +7,6 @@ import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Filter;
-import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.Tile;
@@ -170,20 +169,19 @@ public class SceneEntities {
 
 	public static Set<SceneObject> getLocalAt(int x, int y, final int mask) {
 		final Client client = Context.client();
-		final Multipliers multipliers = Context.multipliers();
 		final Set<SceneObject> objects = new LinkedHashSet<SceneObject>();
 		final RSGround[][][] groundArray = getRSGroundArray(client);
 		if (groundArray == null) {
 			return objects;
 		}
-		final int plane = client.getPlane() * multipliers.GLOBAL_PLANE;
+		final int plane = client.getPlane();
 		final RSGround rsGround = groundArray[plane][x][y];
 
 		if (rsGround != null) {
 			Object obj;
 
 			if ((mask & TYPE_INTERACTIVE) != 0) {
-				for (RSAnimableNode node = (RSAnimableNode) rsGround.getRSAnimableList(); node != null; node = node.getNext()) {
+				for (RSAnimableNode node = rsGround.getRSAnimableList(); node != null; node = node.getNext()) {
 					obj = node.getRSAnimable();
 					if (obj != null && obj instanceof RSObject) {
 						objects.add(new SceneObject((RSObject) obj, TYPE_INTERACTIVE, plane));

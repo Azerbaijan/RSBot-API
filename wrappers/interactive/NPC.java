@@ -2,8 +2,6 @@ package org.powerbot.game.api.wrappers.interactive;
 
 import java.lang.ref.SoftReference;
 
-import org.powerbot.game.api.util.internal.Multipliers;
-import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.RSNPC;
 import org.powerbot.game.client.RSNPCDef;
 
@@ -12,27 +10,25 @@ import org.powerbot.game.client.RSNPCDef;
  */
 public class NPC extends Character {
 	private final SoftReference<RSNPC> n;
-	private final Multipliers multipliers;
 
 	public NPC(final RSNPC n) {
 		this.n = new SoftReference<RSNPC>(n);
-		this.multipliers = Context.multipliers();
 	}
 
 	public int getLevel() {
-		return get().getLevel() * multipliers.NPC_LEVEL;
+		return get().getRSNPCDef().getLevel();
 	}
 
 	public String getName() {
-		return (String) ((RSNPCDef) get().getRSNPCDef()).getName();
+		return get().getRSNPCDef().getName();
 	}
 
 	public int getId() {
-		return ((RSNPCDef) get().getRSNPCDef()).getID() * multipliers.NPCDEF_ID;
+		return get().getRSNPCDef().getID();
 	}
 
 	public String[] getActions() {
-		return (String[]) ((RSNPCDef) get().getRSNPCDef()).getActions();
+		return get().getRSNPCDef().getActions();
 	}
 
 	public RSNPC get() {

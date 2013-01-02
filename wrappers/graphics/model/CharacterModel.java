@@ -24,7 +24,7 @@ public class CharacterModel extends CapturedModel {
 	protected int getLocalX() {
 		final RSCharacter ref = character.get();
 		if (ref != null) {
-			final RSInteractableData data = (RSInteractableData) ref.getData();
+			final RSInteractableData data = ref.getData();
 			return (int) data.getLocation().getX();
 		}
 		return -1;
@@ -34,7 +34,7 @@ public class CharacterModel extends CapturedModel {
 	protected int getLocalY() {
 		final RSCharacter ref = character.get();
 		if (ref != null) {
-			final RSInteractableData data = (RSInteractableData) ref.getData();
+			final RSInteractableData data = ref.getData();
 			return (int) data.getLocation().getY();
 		}
 		return -1;

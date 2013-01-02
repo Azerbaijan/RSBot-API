@@ -12,7 +12,6 @@ import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.Menu;
 import org.powerbot.game.api.util.Filter;
-import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.util.node.LinkedList;
 import org.powerbot.game.api.util.node.Nodes;
 import org.powerbot.game.api.wrappers.Entity;
@@ -44,11 +43,9 @@ import org.powerbot.game.client.Sequence;
  */
 public abstract class Character implements Entity, Locatable, Rotatable, Identifiable {
 	private final Client client;
-	private final Multipliers multipliers;
 
 	public Character() {
 		this.client = Context.client();
-		this.multipliers = Context.multipliers();
 	}
 
 	public abstract int getLevel();
@@ -57,7 +54,7 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 
 	public RegionOffset getRegionOffset() {
 		final RSInteractable location = get();
-		final RSInteractableData data = (RSInteractableData) location.getData();
+		final RSInteractableData data = location.getData();
 		return new RegionOffset((int) data.getLocation().getX() >> 9, (int) data.getLocation().getY() >> 9, getPlane());
 	}
 
@@ -71,27 +68,27 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 	}
 
 	public Character getInteracting() {
-		final int index = get().getInteracting() * multipliers.CHARACTER_INTERACTING;
+		final int index = get().getInteracting();
 		if (index == -1) {
 			return null;
 		}
 		if (index < 0x8000) {
-			final Object npcNode = Nodes.lookup((HashTable) client.getRSNPCNC(), index);
+			final Object npcNode = Nodes.lookup(client.getRSNPCNC(), index);
 			if (npcNode == null) {
 				return null;
 			}
-			return new NPC((RSNPC) ((RSNPCNode) npcNode).getRSNPC());
+			return new NPC(((RSNPCNode) npcNode).getRSNPC());
 		} else {
-			return new Player((RSPlayer) client.getRSPlayerArray()[index - 0x8000]);
+			return new Player(client.getRSPlayerArray()[index - 0x8000]);
 		}
 	}
 
 	public int getAnimation() {
-		final RSAnimator animation = (RSAnimator) get().getAnimation();
+		final RSAnimator animation = get().getAnimation();
 		if (animation != null) {
-			final Sequence sequence = (Sequence) animation.getSequence();
+			final Sequence sequence = animation.getSequence();
 			if (sequence != null) {
-				return sequence.getID() * multipliers.SEQUENCE_ID;
+				return sequence.getID();
 			}
 		}
 		return -1;
@@ -99,11 +96,11 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 
 	public int getPassiveAnimation() {
 		try {
-			final RSAnimator animation = (RSAnimator) get().getPassiveAnimation();
+			final RSAnimator animation = get().getPassiveAnimation();
 			if (animation != null) {
-				final Sequence sequence = (Sequence) animation.getSequence();
+				final Sequence sequence = animation.getSequence();
 				if (sequence != null) {
-					return sequence.getID() * multipliers.SEQUENCE_ID;
+					return sequence.getID();
 				}
 			}
 		} catch (final AbstractMethodError ignored) {
@@ -113,11 +110,11 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 	}
 
 	public int getHeight() {
-		return get().getHeight() * multipliers.CHARACTER_HEIGHT;
+		return get().getHeight();
 	}
 
 	public int getRotation() {
-		return get().getOrientation() * multipliers.CHARACTER_ORIENTATION;
+		return get().getOrientation();
 	}
 
 	public int getOrientation() {
@@ -130,7 +127,7 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 			return null;
 		}
 
-		final int global_loopCycle = client.getLoopCycle() * multipliers.GLOBAL_LOOPCYCLE;
+		final int global_loopCycle = client.getLoopCycle();
 
 		final Object combatStatusList = accessor.getCombatStatusList();
 		if (combatStatusList == null) {
@@ -146,7 +143,7 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 
 			final LinkedList<Object> linkedDataList = new LinkedList<Object>((org.powerbot.game.client.LinkedList) dataList);
 			final Object headData = linkedDataList.getHead();
-			if (headData == null || ((CombatStatusData) headData).getLoopCycleStatus() * multipliers.CHARACTER_LOOPCYCLESTATUS > global_loopCycle) {
+			if (headData == null || ((CombatStatusData) headData).getLoopCycleStatus() > global_loopCycle) {
 				continue;
 			}
 
@@ -164,7 +161,7 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 				return 100;
 			}
 
-			return (int) Math.ceil(combatInfoData.getHPRatio() * multipliers.CHARACTER_HPRATIO * 100 / 255);
+			return (int) Math.ceil(combatInfoData.getHPRatio() * 100 / 255);
 		}
 
 		return -1;
@@ -178,7 +175,7 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 				return 255;
 			}
 
-			return combatInfoData.getHPRatio() * multipliers.CHARACTER_HPRATIO;
+			return combatInfoData.getHPRatio();
 		}
 
 		return -1;
@@ -195,9 +192,9 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 
 	public String getMessage() {
 		try {
-			final RSMessageData message_data = (RSMessageData) get().getMessageData();
+			final RSMessageData message_data = get().getMessageData();
 			if (message_data != null) {
-				return (String) message_data.getMessage();
+				return message_data.getMessage();
 			}
 		} catch (final AbstractMethodError ignored) {
 		} catch (final ClassCastException ignored) {
@@ -206,7 +203,7 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 	}
 
 	public int getSpeed() {
-		return get().isMoving() * multipliers.CHARACTER_ISMOVING;
+		return get().isMoving();
 	}
 
 	public boolean isMoving() {
@@ -255,7 +252,7 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 			return model.getCentralPoint();
 		}
 		final RSCharacter character = get();
-		final RSInteractableData data = (RSInteractableData) character.getData();
+		final RSInteractableData data = character.getData();
 		return Calculations.groundToScreen((int) data.getLocation().getX(), (int) data.getLocation().getY(), character.getPlane(), -getHeight() / 2);
 	}
 

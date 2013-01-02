@@ -9,7 +9,6 @@ import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
-import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.util.node.Deque;
 import org.powerbot.game.api.util.node.Queue;
 import org.powerbot.game.bot.Context;
@@ -30,11 +29,7 @@ public class Menu {
 	 */
 	public static Point getLocation() {
 		final Client client = Context.client();
-		final Multipliers multipliers = Context.multipliers();
-		return new Point(
-				client.getMenuX() * multipliers.GLOBAL_MENUX,
-				client.getMenuY() * multipliers.GLOBAL_MENUY
-		);
+		return new Point(client.getMenuX(), client.getMenuY());
 	}
 
 	/**
@@ -42,11 +37,7 @@ public class Menu {
 	 */
 	public static Point getSubLocation() {
 		final Client client = Context.client();
-		final Multipliers multipliers = Context.multipliers();
-		return new Point(
-				client.getSubMenuX() * multipliers.GLOBAL_SUBMENUX,
-				client.getSubMenuY() * multipliers.GLOBAL_SUBMENUY
-		);
+		return new Point(client.getSubMenuX(), client.getSubMenuY());
 	}
 
 	/**
@@ -54,9 +45,7 @@ public class Menu {
 	 */
 	public static int getWidth() {
 		final Client client = Context.client();
-		final Multipliers multipliers = Context.multipliers();
-		Context.resolve();
-		return client.getMenuWidth() * multipliers.GLOBAL_MENUWIDTH;
+		return client.getMenuWidth();
 	}
 
 	/**
@@ -64,8 +53,7 @@ public class Menu {
 	 */
 	public static int getHeight() {
 		final Client client = Context.client();
-		final Multipliers multipliers = Context.multipliers();
-		return client.getMenuHeight() * multipliers.GLOBAL_MENUHEIGHT;
+		return client.getMenuHeight();
 	}
 
 	/**
@@ -73,8 +61,7 @@ public class Menu {
 	 */
 	public static int getSubWidth() {
 		final Client client = Context.client();
-		final Multipliers multipliers = Context.multipliers();
-		return client.getSubMenuWidth() * multipliers.GLOBAL_SUBMENUWIDTH;
+		return client.getSubMenuWidth();
 	}
 
 	public static boolean isOpen() {
@@ -126,10 +113,10 @@ public class Menu {
 			return false;
 		}
 		if (isCollapsed()) {
-			final Queue<MenuGroupNode> groups = new Queue<MenuGroupNode>((NodeSubQueue) Context.client().getCollapsedMenuItems());
+			final Queue<MenuGroupNode> groups = new Queue<MenuGroupNode>(Context.client().getCollapsedMenuItems());
 			int idx = 0, mainIdx = 0;
 			for (MenuGroupNode g = groups.getHead(); g != null; g = groups.getNext(), ++mainIdx) {
-				final Queue<MenuItemNode> subItems = new Queue<MenuItemNode>((NodeSubQueue) g.getItems());
+				final Queue<MenuItemNode> subItems = new Queue<MenuItemNode>(g.getItems());
 				int subIdx = 0;
 				for (MenuItemNode item = subItems.getHead(); item != null; item = subItems.getNext(), ++subIdx) {
 					if (idx++ == i) {
@@ -247,31 +234,31 @@ public class Menu {
 		final Client client = Context.client();
 		String firstAction = null;
 		if (isCollapsed()) {
-			final Queue<MenuGroupNode> menu = new Queue<MenuGroupNode>((NodeSubQueue) client.getCollapsedMenuItems());
+			final Queue<MenuGroupNode> menu = new Queue<MenuGroupNode>(client.getCollapsedMenuItems());
 			try {
 				for (MenuGroupNode mgn = menu.getHead(); mgn != null; mgn = menu.getNext()) {
-					final Queue<MenuItemNode> submenu = new Queue<MenuItemNode>((NodeSubQueue) mgn.getItems());
+					final Queue<MenuItemNode> submenu = new Queue<MenuItemNode>(mgn.getItems());
 					for (MenuItemNode min = submenu.getHead(); min != null; min = submenu.getNext()) {
 						if (firstAction == null || firstAction.isEmpty()) {
-							firstAction = (String) min.getAction();
+							firstAction = min.getAction();
 						}
 						itemsList.addLast(firstPart ?
-								(String) min.getAction() :
-								(String) min.getOption());
+								min.getAction() :
+								min.getOption());
 					}
 				}
 			} catch (final NullPointerException ignored) {
 			}
 		} else {
 			try {
-				final Deque<MenuItemNode> menu = new Deque<MenuItemNode>((NodeDeque) client.getMenuItems());
+				final Deque<MenuItemNode> menu = new Deque<MenuItemNode>(client.getMenuItems());
 				for (MenuItemNode min = menu.getHead(); min != null; min = menu.getNext()) {
 					if (firstAction == null || firstAction.isEmpty()) {
-						firstAction = (String) min.getAction();
+						firstAction = min.getAction();
 					}
 					itemsList.addLast(firstPart ?
-							(String) min.getAction() :
-							(String) min.getOption());
+							min.getAction() :
+							min.getOption());
 				}
 			} catch (final Throwable ignored) {
 			}

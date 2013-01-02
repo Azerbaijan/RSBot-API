@@ -1,7 +1,5 @@
 package org.powerbot.game.api.util.node;
 
-import org.powerbot.game.client.Node;
-
 /**
  * @author Timer
  */
@@ -20,15 +18,15 @@ public class HashTable {
 	}
 
 	public org.powerbot.game.client.Node getNext() {
-		if (c_index > 0 && ((Node[]) nc.getBuckets())[c_index - 1] != current) {
+		if (c_index > 0 && nc.getBuckets()[c_index - 1] != current) {
 			org.powerbot.game.client.Node node = current;
-			current = node.getPrevious();
+			current = node.getNext();
 			return node;
 		}
-		while (c_index < ((Node[]) nc.getBuckets()).length) {
-			org.powerbot.game.client.Node node = ((Node[]) nc.getBuckets())[c_index++].getPrevious();
-			if (((Node[]) nc.getBuckets())[c_index - 1] != node) {
-				current = node.getPrevious();
+		while (c_index < nc.getBuckets().length) {
+			org.powerbot.game.client.Node node = nc.getBuckets()[c_index++].getNext();
+			if (nc.getBuckets()[c_index - 1] != node) {
+				current = node.getNext();
 				return node;
 			}
 		}

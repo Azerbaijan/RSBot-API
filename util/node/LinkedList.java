@@ -16,13 +16,13 @@ public class LinkedList<N> {
 	}
 
 	public N getHead() {
-		LinkedListNode node = (LinkedListNode) ((LinkedListNode) nl.getTail()).getNext();
+		LinkedListNode node = nl.getTail().getNext();
 
 		if (node == nl.getTail()) {
 			current = null;
 			return null;
 		}
-		current = (LinkedListNode) node.getNext();
+		current = node.getNext();
 
 		return (N) node;
 	}
@@ -34,7 +34,7 @@ public class LinkedList<N> {
 			current = null;
 			return null;
 		}
-		current = (LinkedListNode) node.getNext();
+		current = node.getNext();
 
 		return (N) node;
 	}

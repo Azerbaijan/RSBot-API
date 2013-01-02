@@ -19,13 +19,13 @@ public class SceneObjectModel extends CapturedModel {
 
 	@Override
 	protected int getLocalX() {
-		final RSInteractableData data = (RSInteractableData) ((RSInteractable) instance).getData();
+		final RSInteractableData data = ((RSInteractable) instance).getData();
 		return (int) data.getLocation().getX();
 	}
 
 	@Override
 	protected int getLocalY() {
-		final RSInteractableData data = (RSInteractableData) ((RSInteractable) instance).getData();
+		final RSInteractableData data = ((RSInteractable) instance).getData();
 		return (int) data.getLocation().getY();
 	}
 

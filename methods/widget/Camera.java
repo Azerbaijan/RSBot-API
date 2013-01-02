@@ -8,7 +8,6 @@ import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
-import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.bot.Context;
@@ -20,32 +19,27 @@ import org.powerbot.game.client.Client;
 public class Camera {
 	public static int getX() {
 		final Client client = Context.client();
-		final Multipliers multipliers = Context.multipliers();
-		return client.getCamPosX() * multipliers.GLOBAL_CAMPOSX;
+		return client.getCamPosX();
 	}
 
 	public static int getY() {
 		final Client client = Context.client();
-		final Multipliers multipliers = Context.multipliers();
-		return client.getCamPosY() * multipliers.GLOBAL_CAMPOSY;
+		return client.getCamPosY();
 	}
 
 	public static int getZ() {
 		final Client client = Context.client();
-		final Multipliers multipliers = Context.multipliers();
-		return client.getCamPosZ() * multipliers.GLOBAL_CAMPOSZ;
+		return client.getCamPosZ();
 	}
 
 	public static int getYaw() {
 		final Client client = Context.client();
-		final Multipliers multipliers = Context.multipliers();
-		return (int) ((client.getCameraYaw() * multipliers.GLOBAL_CAMERAYAW) / 45.51);
+		return (int) (client.getCameraYaw() / 45.51);
 	}
 
 	public static int getPitch() {
 		final Client client = Context.client();
-		final Multipliers multipliers = Context.multipliers();
-		return (int) (((client.getCameraPitch() * multipliers.GLOBAL_CAMERAPITCH) - 1024) / 20.48);
+		return (int) ((client.getCameraPitch() - 1024) / 20.48);
 	}
 
 	public synchronized static boolean setPitch(final boolean up) {

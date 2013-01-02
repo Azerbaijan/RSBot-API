@@ -7,7 +7,6 @@ import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Timer;
-import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.ViewportEntity;
@@ -30,9 +29,8 @@ public class Walking {
 
 	public static Tile getDestination() {
 		final Client client = Context.client();
-		final Multipliers multipliers = Context.multipliers();
-		final int lx = (client.getDestX() * multipliers.GLOBAL_DESTX) / 4;
-		final int ly = (client.getDestY() * multipliers.GLOBAL_DESTY) / 4;
+		final int lx = client.getDestX() / 4;
+		final int ly = client.getDestY() / 4;
 		if (lx == -1 || ly == -1) {
 			return new Tile(-1, -1, -1);
 		}
@@ -48,10 +46,9 @@ public class Walking {
 	 * @return The <code>Tile</code> of the offset location (different than map base!).
 	 */
 	public static Tile getCollisionOffset(final int plane) {
-		final Multipliers multipliers = Context.multipliers();
-		final RSInfo info = (RSInfo) Context.client().getRSGroundInfo();
-		final RSGroundData data = ((RSGroundData[]) info.getGroundData())[plane];
-		return new Tile(data.getX() * multipliers.GROUNDDATA_X, data.getY() * multipliers.GROUNDDATA_Y, plane);
+		final RSInfo info = Context.client().getRSGroundInfo();
+		final RSGroundData data = info.getGroundData()[plane];
+		return new Tile(data.getX(), data.getY(), plane);
 	}
 
 	/**
@@ -59,9 +56,9 @@ public class Walking {
 	 * @return The collision flags of the current map block.
 	 */
 	public static int[][] getCollisionFlags(final int plane) {
-		final RSInfo info = (RSInfo) Context.client().getRSGroundInfo();
-		final RSGroundData data = ((RSGroundData[]) info.getGroundData())[plane];
-		return (int[][]) data.getBlocks();
+		final RSInfo info = Context.client().getRSGroundInfo();
+		final RSGroundData data = info.getGroundData()[plane];
+		return data.getBlocks();
 	}
 
 	public static void setRun(final boolean enabled) {

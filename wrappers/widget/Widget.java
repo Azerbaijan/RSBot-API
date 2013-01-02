@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Arrays;
 
-import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.wrappers.Identifiable;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
@@ -31,19 +30,16 @@ public class Widget implements Identifiable {
 		}
 		final int idx = getIndex();
 		final Client client = Context.client();
-		final boolean[] validArray = client.getValidRSInterfaceArray();
-		if (idx >= 0 && validArray != null && idx < validArray.length && validArray[idx]) {
-			final Object[] inters = client.getRSInterfaceCache();
-			if (idx < inters.length && inters[idx] != null) {
-				final WidgetChild[] children = getChildren();
-				int count = 0;
-				for (final WidgetChild child : children) {
-					if (child.getBoundsArrayIndex() == -1) {
-						++count;
-					}
+		final RSInterfaceBase[] inters = client.getRSInterfaceCache();
+		if (idx < inters.length && inters[idx] != null) {
+			final WidgetChild[] children = getChildren();
+			int count = 0;
+			for (final WidgetChild child : children) {
+				if (child.getBoundsArrayIndex() == -1) {
+					++count;
 				}
-				return count != children.length;
 			}
+			return count != children.length;
 		}
 		return false;
 	}
@@ -62,7 +58,7 @@ public class Widget implements Identifiable {
 		if (children != null) {
 			for (final Object child : children) {
 				String string;
-				if (child != null && (string = (String) ((RSInterface) child).getText()) != null) {
+				if (child != null && (string = ((RSInterface) child).getText()) != null) {
 					sb.append(string);
 					sb.append("\n");
 				}
@@ -84,12 +80,11 @@ public class Widget implements Identifiable {
 
 	public Point getLocation() {
 		final Client client = Context.client();
-		final Multipliers multipliers = Context.multipliers();
 		final Object[] children = getChildrenInternal();
 		if (children != null) {
 			for (final Object child : children) {
 				if (child != null) {
-					final int index = ((RSInterface) child).getBoundsArrayIndex() * multipliers.INTERFACE_BOUNDSARRAYINDEX;
+					final int index = ((RSInterface) child).getBoundsArrayIndex();
 					final Rectangle[] boundsArray = client.getRSInterfaceBoundsArray();
 					if (index > 0 && index < boundsArray.length) {
 						return boundsArray[index].getLocation();
@@ -158,7 +153,7 @@ public class Widget implements Identifiable {
 		final Object[] inters = client.getRSInterfaceCache();
 		if (inters != null && index < inters.length && inters[index] != null) {
 			final RSInterfaceBase base = (RSInterfaceBase) inters[index];
-			return (RSInterface[]) base.getComponents();
+			return base.getComponents();
 		}
 		return null;
 	}

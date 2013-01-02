@@ -10,7 +10,6 @@ import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.node.Menu;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.util.node.HashTable;
 import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.Identifiable;
@@ -132,12 +131,12 @@ public class WidgetChild implements Entity, Identifiable {
 
 	public int getRelativeX() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getX() * Context.multipliers().INTERFACE_X : -1;
+		return widget != null ? widget.getX() : -1;
 	}
 
 	public int getRelativeY() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getY() * Context.multipliers().INTERFACE_Y : -1;
+		return widget != null ? widget.getY() : -1;
 	}
 
 	public Point getRelativeLocation() {
@@ -145,11 +144,7 @@ public class WidgetChild implements Entity, Identifiable {
 		if (widget == null) {
 			return new Point(-1, -1);
 		}
-		final Multipliers multipliers = Context.multipliers();
-		return new Point(
-				widget.getX() * multipliers.INTERFACE_X,
-				widget.getY() * multipliers.INTERFACE_Y
-		);
+		return new Point(widget.getX(), widget.getY());
 	}
 
 	public int getWidth() {
@@ -157,7 +152,7 @@ public class WidgetChild implements Entity, Identifiable {
 			return getHorizontalScrollThumbSize();
 		}
 		final RSInterface widget = getInternal();
-		return widget != null ? (widget.getWidth() * Context.multipliers().INTERFACE_WIDTH) - 4 : -1;
+		return widget != null ? widget.getWidth() - 4 : -1;
 	}
 
 	public int getHeight() {
@@ -165,87 +160,87 @@ public class WidgetChild implements Entity, Identifiable {
 			return getVerticalScrollThumbSize();
 		}
 		final RSInterface widget = getInternal();
-		return widget != null ? (widget.getHeight() * Context.multipliers().INTERFACE_HEIGHT) - 4 : -1;
+		return widget != null ? widget.getHeight() - 4 : -1;
 	}
 
 	public int getId() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getID() * Context.multipliers().INTERFACE_ID : -1;
+		return widget != null ? widget.getID() : -1;
 	}
 
 	public int getType() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getType() * Context.multipliers().INTERFACE_TYPE : -1;
+		return widget != null ? widget.getType() : -1;
 	}
 
 	public int getSpecialType() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getSpecialType() * Context.multipliers().INTERFACE_SPECIALTYPE : -1;
+		return widget != null ? widget.getSpecialType() : -1;
 	}
 
 	public int getChildId() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getComponentID() * Context.multipliers().INTERFACE_COMPONENTID : -1;
+		return widget != null ? widget.getComponentID() : -1;
 	}
 
 	public int getChildIndex() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getComponentIndex() * Context.multipliers().INTERFACE_COMPONENTINDEX : -1;
+		return widget != null ? widget.getComponentIndex() : -1;
 	}
 
 	public String getChildName() {
 		final RSInterface widget = getInternal();
-		return widget != null ? (String) widget.getComponentName() : null;
+		return widget != null ? widget.getComponentName() : null;
 	}
 
 	public int getTextureId() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getTextureID() * Context.multipliers().INTERFACE_TEXTUREID : -1;
+		return widget != null ? widget.getTextureID() : -1;
 	}
 
 	public String getText() {
 		final RSInterface widget = getInternal();
-		return widget != null ? (String) widget.getText() : null;
+		return widget != null ? widget.getText() : null;
 	}
 
 	public int getTextColor() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getTextColor() * Context.multipliers().INTERFACE_TEXTCOLOR : -1;
+		return widget != null ? widget.getTextColor() : -1;
 	}
 
 	public int getShadowColor() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getShadowColor() * Context.multipliers().INTERFACE_SHADOWCOLOR : -1;
+		return widget != null ? widget.getShadowColor() : -1;
 	}
 
 	public String getTooltip() {
 		final RSInterface widget = getInternal();
-		return widget != null ? (String) widget.getTooltip() : null;
+		return widget != null ? widget.getTooltip() : null;
 	}
 
 	public int getBorderThickness() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getBorderThinkness() * Context.multipliers().INTERFACE_BORDERTHICKNESS : -1;
+		return widget != null ? widget.getBorderThinkness() : -1;
 	}
 
 	public String getSelectedAction() {
 		final RSInterface widget = getInternal();
-		return widget != null ? (String) widget.getSelectedActionName() : null;
+		return widget != null ? widget.getSelectedActionName() : null;
 	}
 
 	public int getModelId() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getModelID() * Context.multipliers().INTERFACE_MODELID : -1;
+		return widget != null ? widget.getModelID() : -1;
 	}
 
 	public int getModelType() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getModelType() * Context.multipliers().INTERFACE_MODELTYPE : -1;
+		return widget != null ? widget.getModelType() : -1;
 	}
 
 	public int getModelZoom() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getModelZoom() * Context.multipliers().INTERFACE_MODELZOOM : -1;
+		return widget != null ? widget.getModelZoom() : -1;
 	}
 
 	public boolean isInventory() {
@@ -255,27 +250,27 @@ public class WidgetChild implements Entity, Identifiable {
 
 	public int getChildStackSize() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getComponentStackSize() * Context.multipliers().INTERFACE_COMPONENTSTACKSIZE : -1;
+		return widget != null ? widget.getComponentStackSize() : -1;
 	}
 
 	public int getXRotation() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getXRotation() * Context.multipliers().INTERFACE_XROTATION : -1;
+		return widget != null ? widget.getXRotation() : -1;
 	}
 
 	public int getYRotation() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getYRotation() * Context.multipliers().INTERFACE_YROTATION : -1;
+		return widget != null ? widget.getYRotation() : -1;
 	}
 
 	public int getZRotation() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getZRotation() * Context.multipliers().INTERFACE_ZROTATION : -1;
+		return widget != null ? widget.getZRotation() : -1;
 	}
 
 	public String[] getActions() {
 		final RSInterface widget = getInternal();
-		return widget != null ? (String[]) widget.getActions() : null;
+		return widget != null ? widget.getActions() : null;
 	}
 
 	public boolean isHorizontallyFlipped() {
@@ -290,43 +285,43 @@ public class WidgetChild implements Entity, Identifiable {
 
 	public int getHorizontalScrollPosition() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getHorizontalScrollbarPosition() * Context.multipliers().INTERFACE_HORIZONTALSCROLLBARTHUMBPOSITION : -1;
+		return widget != null ? widget.getHorizontalScrollbarPosition() : -1;
 	}
 
 	public int getScrollableContentWidth() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getHorizontalScrollbarSize() * Context.multipliers().INTERFACE_HORIZONTALSCROLLBARSIZE : -1;
+		return widget != null ? widget.getHorizontalScrollbarSize() : -1;
 	}
 
 	public int getHorizontalScrollThumbSize() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getHorizontalScrollbarThumbSize() * Context.multipliers().INTERFACE_HORIZONTALSCROLLBARTHUMBSIZE : -1;
+		return widget != null ? widget.getHorizontalScrollbarThumbSize() : -1;
 	}
 
 	public int getVerticalScrollPosition() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getVerticalScrollbarPosition() * Context.multipliers().INTERFACE_VERTICALSCROLLBARTHUMBPOSITION : -1;
+		return widget != null ? widget.getVerticalScrollbarPosition() : -1;
 	}
 
 	public int getScrollableContentHeight() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getVerticalScrollbarSize() * Context.multipliers().INTERFACE_VERTICALSCROLLBARSIZE : -1;
+		return widget != null ? widget.getVerticalScrollbarSize() : -1;
 	}
 
 	public int getVerticalScrollThumbSize() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getVerticalScrollbarThumbSize() * Context.multipliers().INTERFACE_VERTICALSCROLLBARTHUMBSIZE : -1;
+		return widget != null ? widget.getVerticalScrollbarThumbSize() : -1;
 	}
 
 	public int getBoundsArrayIndex() {
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getBoundsArrayIndex() * Context.multipliers().INTERFACE_BOUNDSARRAYINDEX : -1;
+		return widget != null ? widget.getBoundsArrayIndex() : -1;
 	}
 
 	public WidgetChild[] getChildren() {
 		final RSInterface inter = getInternal();
 		if (inter != null) {
-			final RSInterface[] interfaceComponents = (RSInterface[]) inter.getComponents();
+			final RSInterface[] interfaceComponents = inter.getComponents();
 			if (interfaceComponents != null) {
 				final WidgetChild[] components = new WidgetChild[interfaceComponents.length];
 				for (int i = 0; i < components.length; i++) {
@@ -384,20 +379,18 @@ public class WidgetChild implements Entity, Identifiable {
 			return -1;
 		}
 		final Client client = Context.client();
-		final Multipliers multipliers = Context.multipliers();
 
-		final int parentId = inter.getParentID() * multipliers.INTERFACE_PARENTID;
+		final int parentId = inter.getParentID();
 
 		if (parentId != -1) {
 			return parentId;
 		}
 
 		final int mainID = getId() >>> 0x10;
-		final HashTable ncI = new HashTable((org.powerbot.game.client.HashTable) client.getRSInterfaceNC());
+		final HashTable ncI = new HashTable(client.getRSInterfaceNC());
 		for (RSInterfaceNode node = (RSInterfaceNode) ncI.getFirst(); node != null; node = (RSInterfaceNode) ncI.getNext()) {
-			if (mainID == node.getMainID() * multipliers.INTERFACENODE_MAINID) {
-				final long multiplier = (((long) multipliers.NODE_ID) << 32) + ((multipliers.NODE_ID_p2 & 0xffffffffL));
-				return (int) (node.getID() * multiplier);
+			if (mainID == node.getMainID()) {
+				return node.getMainID();
 			}
 		}
 
@@ -422,7 +415,7 @@ public class WidgetChild implements Entity, Identifiable {
 		if (parent != null) {
 			final RSInterface p = parent.getInternal();
 			if (p != null) {
-				final RSInterface[] components = (RSInterface[]) p.getComponents();
+				final RSInterface[] components = p.getComponents();
 				if (components != null && index >= 0 && index < components.length) {
 					return components[index];
 				}

@@ -5,7 +5,6 @@ import java.awt.Dimension;
 
 import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.util.internal.Constants;
-import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
@@ -31,9 +30,8 @@ public class Game {
 	 */
 	public static int getClientState() {
 		final Client client = Context.client();
-		final Multipliers multipliers = Context.multipliers();
 		final Constants constants = Context.constants();
-		final int clientState = client.getLoginIndex() * multipliers.GLOBAL_LOGININDEX;
+		final int clientState = client.getLoginIndex();
 		if (clientState == constants.CLIENTSTATE_3) {
 			return 3;
 		} else if (clientState == constants.CLIENTSTATE_6) {
@@ -70,8 +68,7 @@ public class Game {
 	 */
 	public static int getPlane() {
 		final Client client = Context.client();
-		final Multipliers multipliers = Context.multipliers();
-		return client.getPlane() * multipliers.GLOBAL_PLANE;
+		return client.getPlane();
 	}
 
 	/**
@@ -79,8 +76,7 @@ public class Game {
 	 */
 	public static int getBaseX() {
 		final Client client = Context.client();
-		final Multipliers multipliers = Context.multipliers();
-		return ((BaseInfo) ((RSInfo) client.getRSGroundInfo()).getBaseInfo()).getX() * multipliers.BASEDATA_X >> 8;
+		return client.getRSGroundInfo().getBaseInfo().getX() >> 8;
 	}
 
 	/**
@@ -88,25 +84,22 @@ public class Game {
 	 */
 	public static int getBaseY() {
 		final Client client = Context.client();
-		final Multipliers multipliers = Context.multipliers();
-		return ((BaseInfo) ((RSInfo) client.getRSGroundInfo()).getBaseInfo()).getY() * multipliers.BASEDATA_Y >> 8;
+		return client.getRSGroundInfo().getBaseInfo().getY() >> 8;
 	}
 
 	public static Tile getMapBase() {
 		final Client client = Context.client();
-		final Multipliers multipliers = Context.multipliers();
-		final BaseInfo infoInts = (BaseInfo) ((RSInfo) client.getRSGroundInfo()).getBaseInfo();
+		final BaseInfo infoInts = client.getRSGroundInfo().getBaseInfo();
 		return new Tile(
-				(infoInts.getX() * multipliers.BASEDATA_X) >> 8,
-				(infoInts.getY() * multipliers.BASEDATA_Y) >> 8,
+				infoInts.getX() >> 8,
+				infoInts.getY() >> 8,
 				Game.getPlane()
 		);
 	}
 
 	public static int getLoopCycle() {
 		final Client client = Context.client();
-		final Multipliers multipliers = Context.multipliers();
-		return client.getLoopCycle() * multipliers.GLOBAL_LOOPCYCLE;
+		return client.getLoopCycle();
 	}
 
 	public static Dimension getDimensions() {

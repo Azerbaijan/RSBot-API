@@ -5,7 +5,6 @@ import java.awt.Point;
 
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.widget.WidgetCache;
-import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.Tile;
@@ -13,7 +12,7 @@ import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
-import org.powerbot.game.client.RSGroundByts;
+import org.powerbot.game.client.RSGroundBytes;
 import org.powerbot.game.client.RSGroundInfo;
 import org.powerbot.game.client.RSInfo;
 import org.powerbot.game.client.TileData;
@@ -67,12 +66,12 @@ public class Calculations {
 		final int x1 = x >> 9;
 		final int y1 = y >> 9;
 		try {
-			final byte[][][] settings = (byte[][][]) ((RSGroundByts) ((RSInfo) client.getRSGroundInfo()).getGroundBytes()).getBytes();
+			final byte[][][] settings = client.getRSGroundInfo().getGroundBytes().getBytes();
 			if (settings != null && x1 >= 0 && x1 < 104 && y1 >= 0 && y1 < 104) {
 				if (plane <= 3 && (settings[1][x1][y1] & 2) != 0) {
 					++plane;
 				}
-				final TileData[] planes = (TileData[]) ((RSGroundInfo) ((RSInfo) client.getRSGroundInfo()).getRSGroundInfo()).getTileData();
+				final TileData[] planes = client.getRSGroundInfo().getRSGroundInfo().getTileData();
 				if (planes != null && plane < planes.length && planes[plane] != null) {
 					final int[][] heights = planes[plane].getHeights();
 					if (heights != null) {
@@ -135,7 +134,6 @@ public class Calculations {
 	 */
 	public static Point worldToMap(double x, double y) {
 		final Client client = Context.client();
-		final Multipliers multipliers = Context.multipliers();
 		final Player local = Players.getLocal();
 		x -= Game.getBaseX();
 		y -= Game.getBaseY();
@@ -153,17 +151,17 @@ public class Calculations {
 
 		if (mmDist * mmDist >= actDistSq) {
 			int angle = 0x3fff & (int) client.getMinimapAngle();
-			final boolean setting4 = client.getMinimapSetting() * multipliers.GLOBAL_MINIMAPSETTING == 4;
+			final boolean setting4 = client.getMinimapSettings() == 4;
 
 			if (!setting4) {
-				angle = 0x3fff & (client.getMinimapOffset() * multipliers.GLOBAL_MINIMAPOFFSET) + (int) client.getMinimapAngle();
+				angle = 0x3fff & client.getMinimapOffset() + (int) client.getMinimapAngle();
 			}
 
 			int cs = Calculations.SIN_TABLE[angle];
 			int cc = Calculations.COS_TABLE[angle];
 
 			if (!setting4) {
-				final int fact = 0x100 + (client.getMinimapScale() * multipliers.GLOBAL_MINIMAPSCALE);
+				final int fact = 0x100 + client.getMinimapScale();
 				cs = 0x100 * cs / fact;
 				cc = 0x100 * cc / fact;
 			}

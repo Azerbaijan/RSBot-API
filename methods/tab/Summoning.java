@@ -331,7 +331,7 @@ public class Summoning {
 	 *
 	 * @return NPC type of currently summoned familiar.
 	 */
-	public static final NPC getFamiliar() {
+	public static NPC getFamiliar() {
 		if (!isFamiliarSummoned()) {
 			return null;
 		}
@@ -349,7 +349,7 @@ public class Summoning {
 	 *
 	 * @return {@link Familiar} type of currently summoned familiar.
 	 */
-	public static final Familiar getEnum() {
+	public static Familiar getEnum() {
 		if (!isFamiliarSummoned()) {
 			return null;
 		}

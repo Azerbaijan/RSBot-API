@@ -153,7 +153,7 @@ public class GroundItems {
 		}
 		final List<GroundItem> groundItems = new ArrayList<GroundItem>();
 		final Client client = Context.client();
-		final HashTable itemHashTable = (HashTable) client.getRSItemHashTable();
+		final HashTable itemHashTable = client.getRSItemHashTable();
 		final int floor = Game.getPlane();
 		final int index = x | y << 14 | floor << 28;
 
@@ -163,7 +163,7 @@ public class GroundItems {
 			return new GroundItem[0];
 		}
 
-		final Deque<RSItem> itemDeque = new Deque<RSItem>((NodeDeque) itemNodeListCache.getNodeList());
+		final Deque<RSItem> itemDeque = new Deque<RSItem>(itemNodeListCache.getNodeList());
 		for (RSItem item = itemDeque.getHead(); item != null; item = itemDeque.getNext()) {
 			groundItems.add(new GroundItem(new Tile(x, y, floor), new Item(item)));
 		}

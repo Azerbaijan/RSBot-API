@@ -1,7 +1,5 @@
 package org.powerbot.game.api.util.node;
 
-import org.powerbot.game.api.util.internal.Multipliers;
-import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Node;
 
 /**
@@ -19,12 +17,9 @@ public class Nodes {
 				return null;
 			}
 
-			final Multipliers multipliers = Context.multipliers();
-			final long multiplier = (((long) multipliers.NODE_ID) << 32) + ((multipliers.NODE_ID_p2 & 0xFFFFFFFFL));
-
-			final Node n = ((Node[]) nc.getBuckets())[(int) (id & ((Node[]) nc.getBuckets()).length - 1)];
-			for (Node node = n.getPrevious(); node != n; node = node.getPrevious()) {
-				if (node.getID() * multiplier == id) {
+			final Node n = nc.getBuckets()[(int) (id & nc.getBuckets().length - 1)];
+			for (Node node = n.getNext(); node != n; node = node.getNext()) {
+				if (node.getId() == id) {
 					return node;
 				}
 			}

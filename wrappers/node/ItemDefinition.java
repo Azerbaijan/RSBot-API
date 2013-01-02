@@ -16,7 +16,7 @@ public class ItemDefinition implements Identifiable {
 
 	public String getName() {
 		try {
-			return (String) definition.getName();
+			return definition.getName();
 		} catch (final ClassCastException ignored) {
 		}
 		return null;
@@ -24,7 +24,7 @@ public class ItemDefinition implements Identifiable {
 
 	public int getId() {
 		try {
-			return definition.getID() * Context.multipliers().ITEMDEF_ID;
+			return definition.getID();
 		} catch (final ClassCastException ignored) {
 		}
 		return -1;
@@ -40,7 +40,7 @@ public class ItemDefinition implements Identifiable {
 
 	public String[] getActions() {
 		try {
-			return (String[]) definition.getActions();
+			return definition.getActions();
 		} catch (final ClassCastException ignored) {
 		}
 		return null;
@@ -48,7 +48,7 @@ public class ItemDefinition implements Identifiable {
 
 	public String[] getGroundActions() {
 		try {
-			return (String[]) definition.getGroundActions();
+			return definition.getGroundActions();
 		} catch (final ClassCastException ignored) {
 		}
 		return null;

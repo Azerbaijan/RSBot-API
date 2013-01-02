@@ -65,7 +65,7 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 	}
 
 	public int getId() {
-		return object.getID();
+		return object.getId();
 	}
 
 	public int getType() {
@@ -82,7 +82,7 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 
 	public RegionOffset getRegionOffset() {
 		final RSInteractable location = (RSInteractable) object;
-		final RSInteractableData data = (RSInteractableData) location.getData();
+		final RSInteractableData data = location.getData();
 		return new RegionOffset((int) data.getLocation().getX() / 512, (int) data.getLocation().getY() / 512, plane);
 	}
 
@@ -92,7 +92,7 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 	}
 
 	public SceneObjectDefinition getDefinition() {
-		final HashTable rsObjectDefLoaders = (HashTable) ((Cache) ((RSObjectDefLoader) ((RSInfo) Context.client().getRSGroundInfo()).getRSObjectDefLoaders()).getCache()).getTable();
+		final HashTable rsObjectDefLoaders = Context.client().getRSGroundInfo().getRSObjectDefLoaders().getCache().getTable();
 		final Node ref = Nodes.lookup(rsObjectDefLoaders, getId());
 		if (ref != null) {
 			if (ref instanceof HardReference) {

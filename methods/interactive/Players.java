@@ -53,7 +53,7 @@ public class Players {
 	public static Player getNearest(final Filter<Player> filter) {
 		final Client client = Context.client();
 		final int[] indices = client.getRSPlayerIndexArray();
-		final RSPlayer[] playerArray = (RSPlayer[]) client.getRSPlayerArray();
+		final RSPlayer[] playerArray = client.getRSPlayerArray();
 		Player player = null;
 		double distance = Double.MAX_VALUE;
 		final RegionOffset position = Players.getLocal().getRegionOffset();
@@ -76,6 +76,6 @@ public class Players {
 	 * @return The client's local <code>Player</code>.
 	 */
 	public static Player getLocal() {
-		return new Player((RSPlayer) Context.client().getMyRSPlayer());
+		return new Player(Context.client().getMyRSPlayer());
 	}
 }

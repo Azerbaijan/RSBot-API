@@ -152,7 +152,7 @@ public class WidgetChild implements Entity, Identifiable {
 			return getHorizontalScrollThumbSize();
 		}
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getWidth() - 4 : -1;
+		return widget != null ? widget.getWidth() : -1;
 	}
 
 	public int getHeight() {
@@ -160,7 +160,7 @@ public class WidgetChild implements Entity, Identifiable {
 			return getVerticalScrollThumbSize();
 		}
 		final RSInterface widget = getInternal();
-		return widget != null ? widget.getHeight() - 4 : -1;
+		return widget != null ? widget.getHeight() : -1;
 	}
 
 	public int getId() {
@@ -390,7 +390,7 @@ public class WidgetChild implements Entity, Identifiable {
 		final HashTable ncI = new HashTable(client.getRSInterfaceNC());
 		for (RSInterfaceNode node = (RSInterfaceNode) ncI.getFirst(); node != null; node = (RSInterfaceNode) ncI.getNext()) {
 			if (mainID == node.getMainID()) {
-				return node.getMainID();
+				return (int) node.getId();
 			}
 		}
 
@@ -407,7 +407,8 @@ public class WidgetChild implements Entity, Identifiable {
 			scrollableArea = Widgets.getChild(scrollableArea.getParentId());
 		}
 
-		return scrollableArea.getScrollableContentHeight() != 0;
+		int scrollableContentHeight = scrollableArea.getScrollableContentHeight();
+		return scrollableContentHeight != 0;
 	}
 
 

@@ -12,7 +12,6 @@ import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.Menu;
 import org.powerbot.game.api.util.Filter;
-import org.powerbot.game.api.util.node.LinkedList;
 import org.powerbot.game.api.util.node.Nodes;
 import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.Identifiable;
@@ -26,16 +25,14 @@ import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.CombatStatus;
 import org.powerbot.game.client.CombatStatusData;
-import org.powerbot.game.client.HashTable;
+import org.powerbot.game.client.LinkedListNode;
 import org.powerbot.game.client.Model;
 import org.powerbot.game.client.RSAnimator;
 import org.powerbot.game.client.RSCharacter;
 import org.powerbot.game.client.RSInteractable;
 import org.powerbot.game.client.RSInteractableData;
 import org.powerbot.game.client.RSMessageData;
-import org.powerbot.game.client.RSNPC;
 import org.powerbot.game.client.RSNPCNode;
-import org.powerbot.game.client.RSPlayer;
 import org.powerbot.game.client.Sequence;
 
 /**
@@ -103,8 +100,7 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 					return sequence.getID();
 				}
 			}
-		} catch (final AbstractMethodError ignored) {
-		} catch (final ClassCastException ignored) {
+		} catch (final AbstractMethodError | ClassCastException ignored) {
 		}
 		return -1;
 	}
@@ -121,69 +117,93 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 		return (630 - getRotation() * 45 / 0x800) % 360;
 	}
 
-	private CombatStatusData getCombatInfoData() {
+	private LinkedListNode[] getBarNodes() {
 		final RSCharacter accessor = get();
-		if (accessor == null) {
-			return null;
+		if (accessor == null) return null;
+		final org.powerbot.game.client.LinkedList barList = accessor.getCombatStatusList();
+		if (barList == null) return null;
+		final LinkedListNode tail = barList.getTail();
+		LinkedListNode health, adrenaline, current;
+		current = tail.getNext();
+		if (current.getNext() != tail) {
+			adrenaline = current;
+			health = current.getNext();
+		} else {
+			adrenaline = null;
+			health = current;
 		}
 
-		final int global_loopCycle = client.getLoopCycle();
+		return new LinkedListNode[]{adrenaline, health};
+	}
 
-		final Object combatStatusList = accessor.getCombatStatusList();
-		if (combatStatusList == null) {
-			return null;
-		}
-
-		final LinkedList<Object> linkedCombatStatus = new LinkedList<Object>((org.powerbot.game.client.LinkedList) combatStatusList);
-		for (Object combatStatus = linkedCombatStatus.getHead(); combatStatus != null; combatStatus = linkedCombatStatus.getNext()) {
-			final Object dataList = ((CombatStatus) combatStatus).getData();
-			if (dataList == null) {
+	private CombatStatusData[] getBarData() {
+		final LinkedListNode[] nodes = getBarNodes();
+		if (nodes == null) return null;
+		final CombatStatusData[] data = new CombatStatusData[nodes.length];
+		for (int i = 0; i < nodes.length; i++) {
+			if (nodes[i] == null || !(nodes[i] instanceof CombatStatus)) {
+				data[i] = null;
+				continue;
+			}
+			final CombatStatus status = (CombatStatus) nodes[i];
+			final org.powerbot.game.client.LinkedList statuses = status.getData();
+			if (statuses == null) {
+				data[i] = null;
 				continue;
 			}
 
-			final LinkedList<Object> linkedDataList = new LinkedList<Object>((org.powerbot.game.client.LinkedList) dataList);
-			final Object headData = linkedDataList.getHead();
-			if (headData == null || ((CombatStatusData) headData).getLoopCycleStatus() > global_loopCycle) {
-				continue;
-			}
-
-			return (CombatStatusData) headData;
+			data[i] = (CombatStatusData) statuses.getTail().getNext();
 		}
-
-		return null;
+		return data;
 	}
 
-	public int getHpPercent() {
-		final RSCharacter c = get();
-		if (c != null) {
-			final CombatStatusData combatInfoData = getCombatInfoData();
-			if (combatInfoData == null) {
-				return 100;
-			}
-
-			return (int) Math.ceil(combatInfoData.getHPRatio() * 100 / 255);
-		}
-
-		return -1;
+	private int toPercent(final int ratio) {
+		return (int) Math.ceil((ratio * 100) / 0xff);
 	}
 
+	public int getAdrenalineRatio() {
+		final CombatStatusData[] data = getBarData();
+		if (data == null || data[0] == null) return 0;
+		return data[0].getHPRatio();
+	}
+
+	public int getHealthRatio() {
+		final CombatStatusData[] data = getBarData();
+		if (data == null || data[1] == null) return 100;
+		return data[1].getHPRatio();
+	}
+
+	public int getAdrenalinePercent() {
+		final CombatStatusData[] data = getBarData();
+		if (data == null || data[0] == null) return 0;
+		return toPercent(data[0].getHPRatio());
+	}
+
+	public int getHealthPercent() {
+		final CombatStatusData[] data = getBarData();
+		if (data == null || data[1] == null) return 100;
+		return toPercent(data[1].getHPRatio());
+	}
+
+	@Deprecated
+	/**
+	 * @see #getHealthRatio()
+	 */
 	public int getHpRatio() {
-		final RSCharacter c = get();
-		if (c != null) {
-			final CombatStatusData combatInfoData = getCombatInfoData();
-			if (combatInfoData == null) {
-				return 255;
-			}
+		return getHealthRatio();
+	}
 
-			return combatInfoData.getHPRatio();
-		}
-
-		return -1;
+	@Deprecated
+	/**
+	 * @see #getHealthPercent()
+	 */
+	public int getHpPercent() {
+		return getHealthPercent();
 	}
 
 	public boolean isInCombat() {
-		final RSCharacter c = get();
-		return c != null && getCombatInfoData() != null;
+		final CombatStatusData[] data = getBarData();
+		return data != null && data[1] != null && data[1].getLoopCycleStatus() < Context.client().getLoopCycle();
 	}
 
 	public boolean isIdle() {
@@ -196,8 +216,7 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 			if (message_data != null) {
 				return message_data.getMessage();
 			}
-		} catch (final AbstractMethodError ignored) {
-		} catch (final ClassCastException ignored) {
+		} catch (final AbstractMethodError | ClassCastException ignored) {
 		}
 		return null;
 	}

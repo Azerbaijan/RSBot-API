@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 public @interface Manifest {
 	String name();
 
-	String description() default "";
+	String description();
 
 	double version() default 1.0;
 

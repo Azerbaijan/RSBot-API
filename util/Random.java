@@ -1,12 +1,29 @@
 package org.powerbot.game.api.util;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+
+import org.powerbot.game.api.methods.Environment;
+
 /**
  * A utility that generates random numbers.
  *
  * @author Timer
+ * @author Paris
  */
 public class Random {
-	private static final java.util.Random random = new java.util.Random();
+	private static final java.util.Random random;
+
+	static {
+		java.util.Random r;
+		try {
+			r = SecureRandom.getInstance("SHA1PRNG");
+		} catch (NoSuchAlgorithmException ignored) {
+			r = new java.util.Random();
+		}
+		r.setSeed((long) Environment.getUserId() << 32 ^ System.currentTimeMillis() + r.nextInt(0xffff));
+		random = r;
+	}
 
 	/**
 	 * @return The next random boolean value.

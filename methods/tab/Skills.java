@@ -87,7 +87,13 @@ public class Skills {
 		final Client client = Context.client();
 		final Skill[] skills = client.getPlayerMetaInfo().getSkills();
 		final int[] levels = new int[skills.length];
-		for (int i = 0; i < skills.length; i++) levels[i] = skills[i].getLevel();
+		for (int i = 0; i < skills.length; i++) {
+			if (skills[i] != null) {
+				levels[i] = skills[i].getLevel();
+			} else {
+				levels[i] = -1;
+			}
+		}
 		return levels;
 	}
 
@@ -95,7 +101,13 @@ public class Skills {
 		final Client client = Context.client();
 		final Skill[] skills = client.getPlayerMetaInfo().getSkills();
 		final int[] levels = new int[skills.length];
-		for (int i = 0; i < skills.length; i++) levels[i] = skills[i].getRealLevel();
+		for (int i = 0; i < skills.length; i++) {
+			if (skills[i] != null) {
+				levels[i] = skills[i].getRealLevel();
+			} else {
+				levels[i] = -1;
+			}
+		}
 		return levels;
 	}
 
@@ -103,7 +115,13 @@ public class Skills {
 		final Client client = Context.client();
 		final Skill[] skills = client.getPlayerMetaInfo().getSkills();
 		final int[] exparr = new int[skills.length];
-		for (int i = 0; i < skills.length; i++) exparr[i] = skills[i].getExperience();
+		for (int i = 0; i < skills.length; i++) {
+			if (skills[i] != null) {
+				exparr[i] = skills[i].getExperience();
+			} else {
+				exparr[i] = -1;
+			}
+		}
 		return exparr;
 	}
 

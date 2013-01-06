@@ -3,7 +3,7 @@ package org.powerbot.game.api.util;
 /**
  * A Timer utility.
  *
- * @author Timer
+ * @author Timer, Vulcan
  */
 public class Timer {
 	private long end;
@@ -17,9 +17,9 @@ public class Timer {
 	 * @param period Time period in milliseconds.
 	 */
 	public Timer(final long period) {
-		this.period = period;
-		start = System.currentTimeMillis();
-		end = start + period;
+		this.period = period * 1000000;
+		start = System.nanoTime();
+		end = start + this.period;
 	}
 
 	/**
@@ -29,7 +29,7 @@ public class Timer {
 	 * @return The elapsed time in milliseconds.
 	 */
 	public long getElapsed() {
-		return System.currentTimeMillis() - start;
+		return (System.nanoTime() - start) / 1000000;
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class Timer {
 	 */
 	public long getRemaining() {
 		if (isRunning()) {
-			return end - System.currentTimeMillis();
+			return (end - System.nanoTime()) / 1000000;
 		}
 		return 0;
 	}
@@ -52,14 +52,14 @@ public class Timer {
 	 * @return <tt>true</tt> if the time period has not yet passed.
 	 */
 	public boolean isRunning() {
-		return System.currentTimeMillis() < end;
+		return System.nanoTime() < end;
 	}
 
 	/**
 	 * Restarts this timer using its period.
 	 */
 	public void reset() {
-		end = System.currentTimeMillis() + period;
+		end = System.nanoTime() + period;
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class Timer {
 	 * @return The new end time.
 	 */
 	public long setEndIn(final long ms) {
-		end = System.currentTimeMillis() + ms;
+		end = System.nanoTime() + ms * 1000000;
 		return end;
 	}
 

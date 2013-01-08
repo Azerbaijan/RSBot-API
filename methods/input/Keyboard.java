@@ -207,10 +207,10 @@ public class Keyboard {
 	 */
 	private static Component getTarget() {
 		final Context context = Context.get();
-		if (context.getApplet() == null || context.getApplet().getComponentCount() == 0) {
+		if (context.getLoader() == null || context.getLoader().getComponentCount() == 0) {
 			throw new RuntimeException("client not ready for events");
 		}
-		return context.getApplet().getComponent(0);
+		return context.getLoader().getComponent(0);
 	}
 
 	/**

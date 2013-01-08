@@ -367,10 +367,10 @@ public class Mouse {
 	 */
 	private static Component getTarget() {
 		final Context context = Context.get();
-		if (context.getApplet() == null || context.getApplet().getComponentCount() == 0) {
+		if (context.getLoader() == null || context.getLoader().getComponentCount() == 0) {
 			return null;
 		}
-		return context.getApplet().getComponent(0);
+		return context.getLoader().getComponent(0);
 	}
 
 	private static int getDragLength() {

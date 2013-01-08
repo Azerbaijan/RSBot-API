@@ -15,8 +15,6 @@ import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.MenuGroupNode;
 import org.powerbot.game.client.MenuItemNode;
-import org.powerbot.game.client.NodeDeque;
-import org.powerbot.game.client.NodeSubQueue;
 
 /**
  * @author Timer

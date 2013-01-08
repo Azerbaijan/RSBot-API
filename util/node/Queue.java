@@ -1,6 +1,5 @@
 package org.powerbot.game.api.util.node;
 
-import org.powerbot.game.client.NodeSub;
 import org.powerbot.game.client.NodeSubQueue;
 
 /**

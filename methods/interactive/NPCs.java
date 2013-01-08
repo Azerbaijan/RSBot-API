@@ -10,7 +10,6 @@ import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
-import org.powerbot.game.client.HashTable;
 import org.powerbot.game.client.Node;
 import org.powerbot.game.client.RSNPC;
 import org.powerbot.game.client.RSNPCNode;

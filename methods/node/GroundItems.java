@@ -16,7 +16,6 @@ import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.HashTable;
-import org.powerbot.game.client.NodeDeque;
 import org.powerbot.game.client.NodeListCache;
 import org.powerbot.game.client.RSItem;
 

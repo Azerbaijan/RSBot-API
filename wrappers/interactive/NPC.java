@@ -3,7 +3,6 @@ package org.powerbot.game.api.wrappers.interactive;
 import java.lang.ref.SoftReference;
 
 import org.powerbot.game.client.RSNPC;
-import org.powerbot.game.client.RSNPCDef;
 
 /**
  * @author Timer

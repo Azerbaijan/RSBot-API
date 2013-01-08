@@ -1,7 +1,6 @@
 package org.powerbot.game.api.wrappers.node;
 
 import org.powerbot.game.api.wrappers.Identifiable;
-import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.RSItemDef;
 
 /**

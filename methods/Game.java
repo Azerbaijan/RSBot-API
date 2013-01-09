@@ -90,7 +90,7 @@ public class Game {
 		final Set<HintArrow> arrows = new HashSet<>();
 		final RSHintArrow[] arr = Context.client().getRSHintArrows();
 		for (final RSHintArrow arrow : arr != null ? arr : new RSHintArrow[0]) {
-			arrows.add(new HintArrow(arrow));
+			if (arrow != null) arrows.add(new HintArrow(arrow));
 		}
 		return arrows;
 	}

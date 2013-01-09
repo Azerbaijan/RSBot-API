@@ -1,5 +1,6 @@
 package org.powerbot.game.api.wrappers;
 
+@Deprecated
 public class RegionOffset {
 	protected final int x, y, plane;
 

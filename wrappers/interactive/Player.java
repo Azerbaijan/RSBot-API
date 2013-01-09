@@ -12,7 +12,7 @@ public class Player extends Character {
 	private final SoftReference<RSPlayer> p;
 
 	public Player(final RSPlayer p) {
-		this.p = new SoftReference<RSPlayer>(p);
+		this.p = new SoftReference<>(p);
 	}
 
 	public int getLevel() {

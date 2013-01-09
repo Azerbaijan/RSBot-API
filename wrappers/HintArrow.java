@@ -1,19 +1,24 @@
 package org.powerbot.game.api.wrappers;
 
 import org.powerbot.game.api.methods.Game;
+import org.powerbot.game.api.util.node.Nodes;
+import org.powerbot.game.api.wrappers.interactive.NPC;
+import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.bot.Context;
+import org.powerbot.game.client.Client;
+import org.powerbot.game.client.Node;
 import org.powerbot.game.client.RSHintArrow;
+import org.powerbot.game.client.RSNPCNode;
+import org.powerbot.game.client.RSPlayer;
 
 /**
  * @author Timer
  */
 public class HintArrow implements Verifiable, Locatable {
 	private final RSHintArrow arrow;
-	private final Tile base;
 
 	public HintArrow(final RSHintArrow arrow) {
 		this.arrow = arrow;
-		this.base = Game.getMapBase();
 	}
 
 	public int getPlane() {
@@ -30,12 +35,28 @@ public class HintArrow implements Verifiable, Locatable {
 
 	@Override
 	public RegionOffset getRegionOffset() {
-		return new RegionOffset(arrow.getX() >> 9, arrow.getY() >> 9, getPlane());
+		return null;
 	}
 
 	@Override
 	public Tile getLocation() {
-		return new Tile(base.getX() + (arrow.getX() >> 9), base.getY() + (arrow.getY() >> 9), getPlane());
+		final Client client = Context.client();
+		final int type = getType();
+		int target = getTargetId();
+		if (type == 0) return null;
+		if (type == 1) {
+			final Node npc = Nodes.lookup(client.getRSNPCNC(), target);
+			if (npc != null && npc instanceof RSNPCNode) {
+				return new NPC(((RSNPCNode) npc).getRSNPC()).getLocation();
+			}
+		} else if (type == 2) {
+			return new Tile(Game.getBaseX() + (arrow.getX() >> 9), Game.getBaseY() + (arrow.getY() >> 9), getPlane());
+		}
+		final RSPlayer[] players = client.getRSPlayerArray();
+		if (type != 10 || target < 0 || target >= players.length) return null;
+		final RSPlayer localPlayer = players[target];
+		if (localPlayer != null) return new Player(localPlayer).getLocation();
+		return null;
 	}
 
 	@Override
@@ -45,5 +66,13 @@ public class HintArrow implements Verifiable, Locatable {
 			if (arrow == this.arrow) return true;
 		}
 		return false;
+	}
+
+	@Override
+	public String toString() {
+		return new StringBuilder(HintArrow.class.getName())
+				.append("[x=").append(arrow.getX() >> 9).append(",y=").append(arrow.getY() >> 9).append(",type=").append(getType()).append(",target=").append(getTargetId())
+				.append(",location=").append(getLocation())
+				.append(']').toString();
 	}
 }

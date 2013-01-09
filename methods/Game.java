@@ -2,14 +2,18 @@ package org.powerbot.game.api.methods;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.util.internal.Constants;
+import org.powerbot.game.api.wrappers.HintArrow;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.BaseInfo;
 import org.powerbot.game.client.Client;
+import org.powerbot.game.client.RSHintArrow;
 
 /**
  * A utility for the manipulation of the game.
@@ -80,6 +84,15 @@ public class Game {
 	public static int getBaseY() {
 		final Client client = Context.client();
 		return client.getRSGroundInfo().getBaseInfo().getY();
+	}
+
+	public static Set<HintArrow> getHintArrows() {
+		final Set<HintArrow> arrows = new HashSet<>();
+		final RSHintArrow[] arr = Context.client().getRSHintArrows();
+		for (final RSHintArrow arrow : arr != null ? arr : new RSHintArrow[0]) {
+			arrows.add(new HintArrow(arrow));
+		}
+		return arrows;
 	}
 
 	public static Tile getMapBase() {

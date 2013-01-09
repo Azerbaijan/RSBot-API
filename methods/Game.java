@@ -110,6 +110,10 @@ public class Game {
 		return client.getLoopCycle();
 	}
 
+	public static int getCrossHairType() {
+		return Context.client().getCrossHairType();
+	}
+
 	public static Dimension getDimensions() {
 		final Canvas canvas = Context.client().getCanvas();
 		return new Dimension(canvas.getWidth(), canvas.getHeight());

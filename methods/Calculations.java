@@ -28,6 +28,7 @@ public class Calculations {
 	public static class Toolkit {
 		public float absoluteX, absoluteY;
 		public float xMultiplier, yMultiplier;
+		public int graphicsIndex;
 	}
 
 	/**

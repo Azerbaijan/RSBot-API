@@ -1,6 +1,6 @@
 package org.powerbot.game.api.wrappers.interactive;
 
-import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 
 import org.powerbot.game.client.RSPlayer;
 import org.powerbot.game.client.RSPlayerComposite;
@@ -9,43 +9,51 @@ import org.powerbot.game.client.RSPlayerComposite;
  * @author Timer
  */
 public class Player extends Character {
-	private final SoftReference<RSPlayer> p;
+	private final WeakReference<RSPlayer> p;
 
 	public Player(final RSPlayer p) {
-		this.p = new SoftReference<>(p);
+		this.p = new WeakReference<>(p);
 	}
 
 	public int getLevel() {
-		return get().getLevel();
+		final RSPlayer player = get();
+		return player != null ? player.getLevel() : -1;
 	}
 
 	public String getName() {
-		return get().getName();
+		final RSPlayer player = get();
+		return player != null ? player.getName() : null;
 	}
 
 	public int getTeam() {
-		return get().getTeam();
+		final RSPlayer player = get();
+		return player != null ? player.getTeam() : -1;
 	}
 
 	public int getPrayerIcon() {
-		return get().getPrayerIcon();
+		final RSPlayer player = get();
+		return player != null ? player.getPrayerIcon() : -1;
 	}
 
 	public int getSkullIcon() {
-		return get().getSkullIcon();
+		final RSPlayer player = get();
+		return player != null ? player.getSkullIcon() : -1;
 	}
 
 	public int getNpcId() {
-		final RSPlayerComposite composite = get().getComposite();
-		return composite == null ? -1 : composite.getNPCID();
+		final RSPlayer player = get();
+		final RSPlayerComposite composite;
+		return player != null && (composite = player.getComposite()) != null ? composite.getNPCID() : -1;
 	}
 
 	public int getId() {
-		return getName().hashCode();
+		final RSPlayer player = get();
+		return player != null ? player.getName().hashCode() : -1;
 	}
 
 	public int[] getAppearance() {
-		final RSPlayerComposite composite = get().getComposite();
+		final RSPlayer player = get();
+		final RSPlayerComposite composite = player != null ? player.getComposite() : null;
 		if (composite != null) {
 			final int[] appearance = composite.getEquipment().clone();
 			for (int i = 0; i < appearance.length; i++) {

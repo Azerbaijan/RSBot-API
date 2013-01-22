@@ -1,33 +1,42 @@
 package org.powerbot.game.api.wrappers.interactive;
 
-import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 
 import org.powerbot.game.client.RSNPC;
+import org.powerbot.game.client.RSNPCDef;
 
 /**
  * @author Timer
  */
 public class NPC extends Character {
-	private final SoftReference<RSNPC> n;
+	private final WeakReference<RSNPC> n;
 
 	public NPC(final RSNPC n) {
-		this.n = new SoftReference<RSNPC>(n);
+		this.n = new WeakReference<>(n);
 	}
 
 	public int getLevel() {
-		return get().getRSNPCDef().getLevel();
+		final RSNPC npc = get();
+		final RSNPCDef def;
+		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getLevel() : -1;
 	}
 
 	public String getName() {
-		return get().getRSNPCDef().getName();
+		final RSNPC npc = get();
+		final RSNPCDef def;
+		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getName() : null;
 	}
 
 	public int getId() {
-		return get().getRSNPCDef().getID();
+		final RSNPC npc = get();
+		final RSNPCDef def;
+		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getID() : -1;
 	}
 
 	public String[] getActions() {
-		return get().getRSNPCDef().getActions();
+		final RSNPC npc = get();
+		final RSNPCDef def;
+		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getActions() : null;
 	}
 
 	public RSNPC get() {

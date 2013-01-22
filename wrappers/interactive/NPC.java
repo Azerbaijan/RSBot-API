@@ -39,6 +39,12 @@ public class NPC extends Character {
 		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getActions() : null;
 	}
 
+	public int getPrayerIcon() {
+		final RSNPC npc = get();
+		final RSNPCDef def;
+		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getPrayerIcon() : -1;
+	}
+
 	public RSNPC get() {
 		return n.get();
 	}

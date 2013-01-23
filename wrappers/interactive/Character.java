@@ -8,8 +8,6 @@ import java.awt.Polygon;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.input.Mouse;
-import org.powerbot.game.api.methods.interactive.NPCs;
-import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.Menu;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.node.Nodes;
@@ -34,6 +32,7 @@ import org.powerbot.game.client.RSInteractableData;
 import org.powerbot.game.client.RSMessageData;
 import org.powerbot.game.client.RSNPC;
 import org.powerbot.game.client.RSNPCNode;
+import org.powerbot.game.client.RSPlayer;
 import org.powerbot.game.client.Sequence;
 
 /**
@@ -62,15 +61,17 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 	}
 
 	public int getPlane() {
-		return get().getPlane();
+		final RSCharacter character = get();
+		return character != null ? character.getPlane() : -1;
 	}
 
 	public Character getInteracting() {
-		final int index = get().getInteracting();
+		final RSCharacter character = get();
+		final int index = character != null ? character.getInteracting() : -1;
 		if (index == -1) {
 			return null;
 		}
-		if (index < 0x8000) {
+		if (index < 32768) {
 			final Object npcNode = Nodes.lookup(client.getRSNPCNC(), index);
 			if (npcNode == null) {
 				return null;
@@ -80,12 +81,15 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 			} else if (npcNode instanceof RSNPC) return new NPC((RSNPC) npcNode);
 			return null;
 		} else {
-			return new Player(client.getRSPlayerArray()[index - 0x8000]);
+			final int pos = index - 32768;
+			final RSPlayer[] players = client.getRSPlayerArray();
+			return pos >= 0 && pos < players.length ? new Player(players[pos]) : null;
 		}
 	}
 
 	public int getAnimation() {
-		final RSAnimator animation = get().getAnimation();
+		final RSCharacter character = get();
+		final RSAnimator animation = character != null ? character.getAnimation() : null;
 		if (animation != null) {
 			final Sequence sequence = animation.getSequence();
 			if (sequence != null) {
@@ -96,29 +100,30 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 	}
 
 	public int getPassiveAnimation() {
-		try {
-			final RSAnimator animation = get().getPassiveAnimation();
-			if (animation != null) {
-				final Sequence sequence = animation.getSequence();
-				if (sequence != null) {
-					return sequence.getID();
-				}
+		final RSCharacter character = get();
+		final RSAnimator animation = character != null ? character.getPassiveAnimation() : null;
+		if (animation != null) {
+			final Sequence sequence = animation.getSequence();
+			if (sequence != null) {
+				return sequence.getID();
 			}
-		} catch (final AbstractMethodError | ClassCastException ignored) {
 		}
 		return -1;
 	}
 
 	public int getHeight() {
-		return get().getHeight();
+		final RSCharacter character = get();
+		return character != null ? character.getHeight() : -1;
 	}
 
 	public int getRotation() {
-		return get().getOrientation();
+		final RSCharacter character = get();
+		return character != null ? character.getOrientation() : -1;
 	}
 
 	public int getOrientation() {
-		return (630 - getRotation() * 45 / 0x800) % 360;
+		final int r = getRotation();
+		return r != -1 ? (630 - r * 45 / 0x800) % 360 : -1;
 	}
 
 	private LinkedListNode[] getBarNodes() {
@@ -215,18 +220,14 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 	}
 
 	public String getMessage() {
-		try {
-			final RSMessageData message_data = get().getMessageData();
-			if (message_data != null) {
-				return message_data.getMessage();
-			}
-		} catch (final AbstractMethodError | ClassCastException ignored) {
-		}
-		return null;
+		final RSCharacter character = get();
+		final RSMessageData message_data = character != null ? character.getMessageData() : null;
+		return message_data != null ? message_data.getMessage() : null;
 	}
 
 	public int getSpeed() {
-		return get().isMoving();
+		final RSCharacter character = get();
+		return character != null ? character.isMoving() : -1;
 	}
 
 	public boolean isMoving() {
@@ -244,29 +245,10 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 		return null;
 	}
 
-	public abstract RSCharacter get();
+	protected abstract RSCharacter get();
 
 	public boolean validate() {
-		final RSCharacter this_ref;
-		if ((this_ref = get()) != null) {
-			if (this instanceof Player) {
-				return Players.getNearest(new Filter<Player>() {
-					@Override
-					public boolean accept(final Player character) {
-						return character.get() == this_ref;
-					}
-				}) != null;
-			} else if (this instanceof NPC) {
-				return NPCs.getNearest(new Filter<NPC>() {
-					@Override
-					public boolean accept(final NPC character) {
-						return character.get() == this_ref;
-					}
-				}) != null;
-			}
-			return true;
-		}
-		return false;
+		return get() != null;
 	}
 
 	public Point getCentralPoint() {

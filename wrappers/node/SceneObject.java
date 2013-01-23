@@ -3,7 +3,6 @@ package org.powerbot.game.api.wrappers.node;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
-import java.lang.ref.SoftReference;
 import java.util.Set;
 
 import org.powerbot.game.api.methods.Game;
@@ -18,10 +17,8 @@ import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
 import org.powerbot.game.api.wrappers.graphics.model.SceneObjectModel;
 import org.powerbot.game.bot.Context;
-import org.powerbot.game.client.HardReference;
 import org.powerbot.game.client.HashTable;
 import org.powerbot.game.client.Model;
-import org.powerbot.game.client.Node;
 import org.powerbot.game.client.RSAnimable;
 import org.powerbot.game.client.RSInteractable;
 import org.powerbot.game.client.RSInteractableData;
@@ -90,18 +87,8 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 
 	public SceneObjectDefinition getDefinition() {
 		final HashTable rsObjectDefLoaders = Context.client().getRSGroundInfo().getRSObjectDefLoaders().getCache().getTable();
-		final Node ref = Nodes.lookup(rsObjectDefLoaders, getId());
-		if (ref != null) {
-			if (ref instanceof HardReference) {
-				return new SceneObjectDefinition((RSObjectDef) ((HardReference) ref).get());
-			} else if (ref instanceof SoftReference) {
-				final Object def = ((SoftReference<?>) ref).get();
-				if (def != null) {
-					return new SceneObjectDefinition((RSObjectDef) def);
-				}
-			}
-		}
-		return null;
+		final Object obj = Nodes.lookup(rsObjectDefLoaders, getId());
+		return obj != null ? new SceneObjectDefinition((RSObjectDef) obj) : null;
 	}
 
 	public CapturedModel getModel() {

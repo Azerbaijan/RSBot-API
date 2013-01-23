@@ -4,10 +4,8 @@ import org.powerbot.game.api.util.node.Nodes;
 import org.powerbot.game.api.wrappers.Identifiable;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
-import org.powerbot.game.client.HardReference;
-import org.powerbot.game.client.Node;
 import org.powerbot.game.client.RSItem;
-import org.powerbot.game.client.SoftReference;
+import org.powerbot.game.client.RSItemDef;
 
 /**
  * Represents an item (with an id and stack size).
@@ -58,20 +56,9 @@ public class Item implements Identifiable {
 
 	public ItemDefinition getDefinition() {
 		try {
-			final Node ref = Nodes.lookup(Context.client().getRSItemDefLoader().getCache().getTable(), id);
-			if (ref != null) {
-				if (ref instanceof HardReference) {
-					return new ItemDefinition((org.powerbot.game.client.RSItemDef) ((HardReference) ref).get());
-				} else if (ref instanceof SoftReference) {
-					final Object def = ((java.lang.ref.SoftReference<?>) ((SoftReference) ref).get()).get();
-
-					if (def != null) {
-						return new ItemDefinition((org.powerbot.game.client.RSItemDef) def);
-					}
-				}
-			}
-			return null;
-		} catch (final ClassCastException | AbstractMethodError e) {
+			final Object obj = Nodes.lookup(Context.client().getRSItemDefLoader().getCache().getTable(), id);
+			return obj != null ? new ItemDefinition((RSItemDef) obj) : null;
+		} catch (final Exception e) {
 			return null;
 		}
 	}

@@ -32,6 +32,7 @@ import org.powerbot.game.client.RSCharacter;
 import org.powerbot.game.client.RSInteractable;
 import org.powerbot.game.client.RSInteractableData;
 import org.powerbot.game.client.RSMessageData;
+import org.powerbot.game.client.RSNPC;
 import org.powerbot.game.client.RSNPCNode;
 import org.powerbot.game.client.Sequence;
 
@@ -74,7 +75,10 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 			if (npcNode == null) {
 				return null;
 			}
-			return new NPC(((RSNPCNode) npcNode).getRSNPC());
+			if (npcNode instanceof RSNPCNode) {
+				return new NPC(((RSNPCNode) npcNode).getRSNPC());
+			} else if (npcNode instanceof RSNPC) return new NPC((RSNPC) npcNode);
+			return null;
 		} else {
 			return new Player(client.getRSPlayerArray()[index - 0x8000]);
 		}

@@ -154,7 +154,7 @@ public class GroundItems {
 		final Client client = Context.client();
 		final HashTable itemHashTable = client.getRSItemHashTable();
 		final int floor = Game.getPlane();
-		final int index = x | y << 14 | floor << 28;
+		final long index = x | y << 14 | floor << 28;
 
 		final NodeListCache itemNodeListCache = (NodeListCache) Nodes.lookup(itemHashTable, index);
 

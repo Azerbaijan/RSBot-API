@@ -6,8 +6,8 @@ import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
-import org.powerbot.game.client.Node;
 import org.powerbot.game.client.RSHintArrow;
+import org.powerbot.game.client.RSNPC;
 import org.powerbot.game.client.RSNPCNode;
 import org.powerbot.game.client.RSPlayer;
 
@@ -45,10 +45,14 @@ public class HintArrow implements Verifiable, Locatable {
 		int target = getTargetId();
 		if (type == 0) return null;
 		if (type == 1) {
-			final Node npc = Nodes.lookup(client.getRSNPCNC(), target);
-			if (npc != null && npc instanceof RSNPCNode) {
-				return new NPC(((RSNPCNode) npc).getRSNPC()).getLocation();
+			NPC npc = null;
+			final Object node = Nodes.lookup(client.getRSNPCNC(), target);
+			if (node != null) {
+				if (node instanceof RSNPCNode) {
+					npc = new NPC(((RSNPCNode) node).getRSNPC());
+				} else if (node instanceof RSNPC) npc = new NPC((RSNPC) node);
 			}
+			return npc != null ? npc.getLocation() : null;
 		} else if (type == 2) {
 			return new Tile(Game.getBaseX() + (arrow.getX() >> 9), Game.getBaseY() + (arrow.getY() >> 9), getPlane());
 		}

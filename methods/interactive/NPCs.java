@@ -10,10 +10,8 @@ import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
-import org.powerbot.game.client.Node;
 import org.powerbot.game.client.RSNPC;
 import org.powerbot.game.client.RSNPCNode;
-import org.powerbot.game.client.SoftReference;
 
 /**
  * A utility for the access of Npcs.
@@ -60,15 +58,14 @@ public class NPCs {
 		final int[] indices = client.getRSNPCIndexArray();
 		final Set<NPC> npcs = new HashSet<>();
 		for (final int index : indices) {
-			final Node node = Nodes.lookup(client.getRSNPCNC(), index);
-			if (node != null) {
+			final Object n = Nodes.lookup(client.getRSNPCNC(), index);
+
+			if (n != null) {
 				NPC npc = null;
-				if (node instanceof RSNPCNode) {
-					npc = new NPC(((RSNPCNode) node).getRSNPC());
-				} else if (node instanceof SoftReference) {
-					npc = new NPC((RSNPC) ((java.lang.ref.SoftReference<?>) ((SoftReference) node).get()).get());
-				}
-				if (filter.accept(npc)) {
+				if (n instanceof RSNPCNode) {
+					npc = new NPC(((RSNPCNode) n).getRSNPC());
+				} else if (n instanceof RSNPC) npc = new NPC((RSNPC) n);
+				if (npc != null && filter.accept(npc)) {
 					npcs.add(npc);
 				}
 			}
@@ -125,9 +122,14 @@ public class NPCs {
 		double distance = Double.MAX_VALUE;
 		final RegionOffset position = Players.getLocal().getRegionOffset();
 		for (final int index : indices) {
-			final Node node = Nodes.lookup(client.getRSNPCNC(), index);
-			if (node != null && node instanceof RSNPCNode) {
-				final NPC t_npc = new NPC(((RSNPCNode) node).getRSNPC());
+			final Object node = Nodes.lookup(client.getRSNPCNC(), index);
+			NPC t_npc = null;
+			if (node != null) {
+				if (node instanceof RSNPCNode) {
+					t_npc = new NPC(((RSNPCNode) node).getRSNPC());
+				} else if (node instanceof RSNPC) t_npc = new NPC((RSNPC) node);
+			}
+			if (t_npc != null) {
 				try {
 					if (filter.accept(t_npc)) {
 						final double dist = Calculations.distance(position, t_npc.getRegionOffset());

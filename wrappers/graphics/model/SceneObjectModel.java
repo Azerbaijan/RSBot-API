@@ -8,12 +8,10 @@ import org.powerbot.game.client.RSInteractableData;
 import org.powerbot.game.client.RSObject;
 
 public class SceneObjectModel extends CapturedModel {
-	private final SceneObject location;
 	private final RSObject instance;
 
 	public SceneObjectModel(final Model model, final SceneObject location) {
-		super(model, location);
-		this.location = location;
+		super(model);
 		this.instance = location.getInstance();
 	}
 
@@ -27,11 +25,6 @@ public class SceneObjectModel extends CapturedModel {
 	protected int getLocalY() {
 		final RSInteractableData data = ((RSInteractable) instance).getData();
 		return (int) data.getLocation().getY();
-	}
-
-	@Override
-	protected int getPlane() {
-		return location.getPlane();
 	}
 
 	@Override

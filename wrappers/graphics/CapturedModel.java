@@ -7,26 +7,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.powerbot.game.api.methods.Calculations;
-import org.powerbot.game.api.methods.input.Mouse;
-import org.powerbot.game.api.methods.node.Menu;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.wrappers.Entity;
-import org.powerbot.game.api.wrappers.Verifiable;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Model;
 import org.powerbot.game.client.ModelCapture;
 
-public abstract class CapturedModel implements Entity {
-	private final Verifiable verifiable;
-
-	/**
-	 * Returns a filter that matches against the array of point indices for the
-	 * A vertices of each triangle. Use in scripts is discouraged.
-	 *
-	 * @param vertex_a The array of indices for A vertices.
-	 * @return The vertex point index based model filter.
-	 */
+public abstract class CapturedModel {
 	public static Filter<CapturedModel> newVertexFilter(final short[] vertex_a) {
 		return new Filter<CapturedModel>() {
 			public boolean accept(final CapturedModel m) {
@@ -36,18 +23,17 @@ public abstract class CapturedModel implements Entity {
 	}
 
 	protected int[] xPoints;
-	protected final int[] yPoints;
+	protected int[] yPoints;
 	protected int[] zPoints;
 
-	protected final short[] indices1;
-	protected final short[] indices2;
-	protected final short[] indices3;
+	protected short[] indices1;
+	protected short[] indices2;
+	protected short[] indices3;
 
-	protected final int numVertices;
-	protected final int numFaces;
+	protected int numVertices;
+	protected int numFaces;
 
-	public CapturedModel(final Model model, final Verifiable verifiable) {
-		this.verifiable = verifiable;
+	public CapturedModel(final Model model) {
 		xPoints = model.getXPoints();
 		yPoints = model.getYPoints();
 		zPoints = model.getZPoints();
@@ -67,13 +53,7 @@ public abstract class CapturedModel implements Entity {
 
 	protected abstract int getLocalY();
 
-	protected abstract int getPlane();
-
 	protected abstract void update();
-
-	public boolean validate() {
-		return verifiable == null || verifiable.validate();
-	}
 
 	public Point getCentralPoint() {
 		if (numFaces < 1) {
@@ -86,7 +66,7 @@ public abstract class CapturedModel implements Entity {
 
 		final int x = getLocalX();
 		final int y = getLocalY();
-		final int height = Calculations.calculateTileHeight(x, y, getPlane());
+		final int height = Calculations.calculateTileHeight(x, y);
 
 		final int[][] points = projectVertices();
 
@@ -176,39 +156,6 @@ public abstract class CapturedModel implements Entity {
 		return polys.toArray(new Polygon[polys.size()]);
 	}
 
-	public boolean hover() {
-		return Mouse.apply(this, new Filter<Point>() {
-			public boolean accept(Point point) {
-				return true;
-			}
-		});
-	}
-
-	public boolean click(final boolean left) {
-		return Mouse.apply(this, new Filter<Point>() {
-			public boolean accept(Point point) {
-				Mouse.click(left);
-				return true;
-			}
-		});
-	}
-
-	public boolean interact(final String action) {
-		return Mouse.apply(this, new Filter<Point>() {
-			public boolean accept(final Point point) {
-				return Menu.select(action);
-			}
-		});
-	}
-
-	public boolean interact(final String action, final String option) {
-		return Mouse.apply(this, new Filter<Point>() {
-			public boolean accept(final Point point) {
-				return Menu.select(action, option);
-			}
-		});
-	}
-
 	public void draw(final Graphics render) {
 		final int[][] screen = projectVertices();
 
@@ -240,7 +187,7 @@ public abstract class CapturedModel implements Entity {
 		update();
 		final int locX = getLocalX();
 		final int locY = getLocalY();
-		final int height = Calculations.calculateTileHeight(locX, locY, getPlane());
+		final int height = Calculations.calculateTileHeight(locX, locY);
 
 		final int[][] screen = new int[numVertices][3];
 		for (int index = 0; index < numVertices; index++) {

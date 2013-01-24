@@ -72,7 +72,7 @@ public class GroundItem implements Entity, Locatable, Identifiable {
 					if (model != null && model instanceof Model) models[i++] = (Model) model;
 				}
 
-				return new StaticModel(models[Random.nextInt(0, i)], x, y, plane, this);
+				return new StaticModel(models[Random.nextInt(0, i)], x, y);
 			}
 		}
 		return null;

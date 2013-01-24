@@ -291,10 +291,6 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 	}
 
 	public boolean hover() {
-		final CapturedModel model = getModel();
-		if (model != null) {
-			return model.hover();
-		}
 		return Mouse.apply(this, new Filter<Point>() {
 			public boolean accept(final Point point) {
 				return true;
@@ -303,10 +299,6 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 	}
 
 	public boolean click(final boolean left) {
-		final CapturedModel model = getModel();
-		if (model != null) {
-			return model.click(left);
-		}
 		return Mouse.apply(this, new Filter<Point>() {
 			public boolean accept(final Point point) {
 				Mouse.click(true);
@@ -316,10 +308,6 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 	}
 
 	public boolean interact(final String action) {
-		final CapturedModel model = getModel();
-		if (model != null) {
-			return model.interact(action);
-		}
 		return Mouse.apply(this, new Filter<Point>() {
 			public boolean accept(final Point point) {
 				return Menu.select(action);
@@ -328,10 +316,6 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 	}
 
 	public boolean interact(final String action, final String option) {
-		final CapturedModel model = getModel();
-		if (model != null) {
-			return model.interact(action, option);
-		}
 		return Mouse.apply(this, new Filter<Point>() {
 			public boolean accept(final Point point) {
 				return Menu.select(action, option);

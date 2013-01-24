@@ -53,6 +53,10 @@ public class Calculations {
 		}
 	}
 
+	public static int calculateTileHeight(final int x, final int y) {
+		return calculateTileHeight(x, y, Context.client().getPlane());
+	}
+
 	/**
 	 * @param x     The local x position of the tile of which you desire to get the height for.
 	 * @param y     The local y position of the tile of which you desire to get the height for.

@@ -6,7 +6,10 @@ import java.awt.Polygon;
 import java.util.Set;
 
 import org.powerbot.game.api.methods.Game;
+import org.powerbot.game.api.methods.input.Mouse;
+import org.powerbot.game.api.methods.node.Menu;
 import org.powerbot.game.api.methods.node.SceneEntities;
+import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.node.Nodes;
 import org.powerbot.game.api.wrappers.Area;
 import org.powerbot.game.api.wrappers.Entity;
@@ -139,23 +142,36 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 	}
 
 	public boolean hover() {
-		final CapturedModel model = getModel();
-		return model != null ? model.hover() : getLocation().hover();
+		return Mouse.apply(this, new Filter<Point>() {
+			public boolean accept(final Point point) {
+				return true;
+			}
+		});
 	}
 
 	public boolean click(final boolean left) {
-		final CapturedModel model = getModel();
-		return model != null ? model.click(left) : getLocation().click(left);
+		return Mouse.apply(this, new Filter<Point>() {
+			public boolean accept(final Point point) {
+				Mouse.click(left);
+				return true;
+			}
+		});
 	}
 
 	public boolean interact(final String action) {
-		final CapturedModel model = getModel();
-		return model != null ? model.interact(action) : getLocation().interact(action);
+		return Mouse.apply(this, new Filter<Point>() {
+			public boolean accept(final Point point) {
+				return Menu.select(action);
+			}
+		});
 	}
 
 	public boolean interact(final String action, final String option) {
-		final CapturedModel model = getModel();
-		return model != null ? model.interact(action, option) : getLocation().interact(action, option);
+		return Mouse.apply(this, new Filter<Point>() {
+			public boolean accept(final Point point) {
+				return Menu.select(action, option);
+			}
+		});
 	}
 
 	public void draw(final Graphics render) {

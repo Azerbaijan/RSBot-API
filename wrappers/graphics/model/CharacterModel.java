@@ -11,7 +11,7 @@ public class CharacterModel extends CapturedModel {
 	private final int[] x_base, z_base;
 
 	public CharacterModel(final Model model, final org.powerbot.game.api.wrappers.interactive.Character character) {
-		super(model, character);
+		super(model);
 		this.character = character;
 		x_base = xPoints;
 		z_base = zPoints;
@@ -29,11 +29,6 @@ public class CharacterModel extends CapturedModel {
 	protected int getLocalY() {
 		final RegionOffset ref = character.getRegionOffset();
 		return ref.getY();
-	}
-
-	@Override
-	protected int getPlane() {
-		return character.getPlane();
 	}
 
 	@Override

@@ -19,7 +19,7 @@ import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
-import org.powerbot.game.api.wrappers.graphics.model.StaticModel;
+import org.powerbot.game.api.wrappers.graphics.model.RenderableModel;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.BaseInfo;
 import org.powerbot.game.client.Cache;
@@ -54,7 +54,7 @@ public class GroundItem implements Entity, Locatable, Identifiable {
 		final RSGroundInfo groundInfo = info.getRSGroundInfo();
 		final RSGround[][][] grounds = groundInfo.getRSGroundArray();
 		final int plane = client.getPlane();
-		final RSGround ground = grounds[x][y][plane];
+		final RSGround ground = grounds[plane][x][y];
 		if (ground != null) {
 			final RSItemPile itemPile = ground.getRSItemPile();
 			if (itemPile != null) {
@@ -72,7 +72,7 @@ public class GroundItem implements Entity, Locatable, Identifiable {
 					if (model != null && model instanceof Model) models[i++] = (Model) model;
 				}
 
-				return new StaticModel(models[Random.nextInt(0, i)], x, y);
+				return i > 0 ? new RenderableModel(models[Random.nextInt(0, i)], itemPile) : null;
 			}
 		}
 		return null;

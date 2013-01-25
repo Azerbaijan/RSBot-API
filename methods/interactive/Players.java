@@ -37,11 +37,11 @@ public class Players {
 	public static Player[] getLoaded(final Filter<Player> filter) {
 		final Client client = Context.client();
 		final int[] indices = client.getRSPlayerIndexArray();
-		final Object[] playerArray = client.getRSPlayerArray();
-		final Set<Player> players = new HashSet<Player>();
+		final RSPlayer[] playerArray = client.getRSPlayerArray();
+		final Set<Player> players = new HashSet<>();
 		for (final int index : indices) {
 			if (index != 0 && playerArray[index] != null) {
-				final Player player = new Player((RSPlayer) playerArray[index]);
+				final Player player = new Player(playerArray[index]);
 				if (filter.accept(player)) {
 					players.add(player);
 				}

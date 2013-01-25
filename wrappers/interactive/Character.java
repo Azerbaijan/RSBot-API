@@ -29,6 +29,7 @@ import org.powerbot.game.client.RSAnimator;
 import org.powerbot.game.client.RSCharacter;
 import org.powerbot.game.client.RSInteractable;
 import org.powerbot.game.client.RSInteractableData;
+import org.powerbot.game.client.RSInteractableLocation;
 import org.powerbot.game.client.RSMessageData;
 import org.powerbot.game.client.RSNPC;
 import org.powerbot.game.client.RSNPCNode;
@@ -53,6 +54,11 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 		final RSInteractable location = get();
 		final RSInteractableData data = location.getData();
 		return new RegionOffset((int) data.getLocation().getX() >> 9, (int) data.getLocation().getY() >> 9, getPlane());
+	}
+
+	public RSInteractableLocation getRenderableLocation() {
+		final RSInteractable interactable = get();
+		return get() != null ? interactable.getData().getLocation() : null;
 	}
 
 	public Tile getLocation() {

@@ -1,10 +1,10 @@
 package org.powerbot.game.api.wrappers.graphics.model;
 
 import org.powerbot.game.api.methods.Calculations;
-import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
 import org.powerbot.game.api.wrappers.interactive.Character;
 import org.powerbot.game.client.Model;
+import org.powerbot.game.client.RSInteractableLocation;
 
 public class CharacterModel extends CapturedModel {
 	private final Character character;
@@ -21,14 +21,14 @@ public class CharacterModel extends CapturedModel {
 
 	@Override
 	protected int getLocalX() {
-		final RegionOffset ref = character.getRegionOffset();
-		return ref.getX();
+		final RSInteractableLocation ref = character.getRenderableLocation();
+		return (int) ref.getX();
 	}
 
 	@Override
 	protected int getLocalY() {
-		final RegionOffset ref = character.getRegionOffset();
-		return ref.getY();
+		final RSInteractableLocation ref = character.getRenderableLocation();
+		return (int) ref.getY();
 	}
 
 	@Override

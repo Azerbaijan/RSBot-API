@@ -112,9 +112,13 @@ public class Calculations {
 	 * @return The <code>Point</code> of the given coordinates on screen.
 	 */
 	public static Point worldToScreen(final int x, final int y, final int z) {
-		final Context bot = Context.get();
-		final Toolkit toolkit = bot.getToolkit();
-		final Viewport viewport = bot.getViewport();
+		final Context context = Context.get();
+		final Calculations.Toolkit toolkit = context.getToolkit();
+		final Calculations.Viewport viewport = context.getViewport();
+		return worldToScreen(toolkit, viewport, x, y, z);
+	}
+
+	public static Point worldToScreen(final Toolkit toolkit, final Viewport viewport, int x, final int y, final int z) {
 		final float _z = (viewport.zOff + (viewport.zX * x + viewport.zY * y + viewport.zZ * z));
 		final float _x = (viewport.xOff + (viewport.xX * x + viewport.xY * y + viewport.xZ * z));
 		final float _y = (viewport.yOff + (viewport.yX * x + viewport.yY * y + viewport.yZ * z));

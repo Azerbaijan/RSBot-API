@@ -251,7 +251,7 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 		return null;
 	}
 
-	protected abstract RSCharacter get();
+	public abstract RSCharacter get();
 
 	public boolean validate() {
 		return get() != null;
